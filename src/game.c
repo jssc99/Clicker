@@ -9,15 +9,15 @@
 
 void game_init(Game* game)
 {
-
+    return;
 }
 
 void game_update(Game* game)
 {
-
+    return;
 }
 
 void game_shutdown(Game* game)
 {
-
+    return;
 }
