@@ -17,6 +17,25 @@ void game_init(Game *game)
     game->check.hasTenCandyCounter = 0;
 }
 
+const char* getThrowAnim(int counter)
+{
+    if (counter > 1 && counter < 2) return "...";
+    else if (counter == 3)          return "... :'(";
+    else if (counter == 4)          return "...  :'(";
+    else if (counter == 5)          return "...   :'(";
+    else return "";
+    //      (game->check.hasTenCandyCounter > 1 && game->check.hasTenCandyCounter < 6) ? "..." : "",
+    //                 (game->check.hasTenCandyCounter > 2 && game->check.hasTenCandyCounter < 6) ? "?" : "",
+    //                 (game->check.hasTenCandyCounter == 3) ? " :'(" : "",
+    //                 (game->check.hasTenCandyCounter == 4) ? " :(" : "",
+    //                 (game->check.hasTenCandyCounter == 5) ? " (;_;)" : "",
+    //                 (game->check.hasTenCandyCounter == 6) ? ". Please stop." : "",
+    //                 (game->check.hasTenCandyCounter == 7) ? ". :/" : "",
+    //                 (game->check.hasTenCandyCounter == 8) ? ". >:/" : "",
+    //                 (game->check.hasTenCandyCounter == 9) ? ". >:(" : "",
+    //                 (game->check.hasTenCandyCounter >= 10) ? ". Fuck You." : "");
+}
+
 void game_update(Game *game)
 {
     if ((game->frames += pg_io_get_frame_time()) > 1)
@@ -55,17 +74,20 @@ void game_update(Game *game)
             game->candy -= 10;
         }
         if (game->check.hasTenCandyCounter)
-            im_print(1, 8, "You threw %d candies on the ground%s%s%s%s%s%s%s%s%s%s", game->check.hasTenCandyCounter * 10,
-                     (game->check.hasTenCandyCounter > 1 && game->check.hasTenCandyCounter < 6) ? "..." : "",
-                     (game->check.hasTenCandyCounter > 2 && game->check.hasTenCandyCounter < 6) ? "?" : "",
-                     (game->check.hasTenCandyCounter == 3) ? " :'(" : "",
-                     (game->check.hasTenCandyCounter == 4) ? " :(" : "",
-                     (game->check.hasTenCandyCounter == 5) ? " (;_;)" : "",
-                     (game->check.hasTenCandyCounter == 6) ? ". Please stop." : "",
-                     (game->check.hasTenCandyCounter == 7) ? ". :/" : "",
-                     (game->check.hasTenCandyCounter == 8) ? ". >:/" : "",
-                     (game->check.hasTenCandyCounter == 9) ? ". >:(" : "",
-                     (game->check.hasTenCandyCounter >= 10) ? ". Fuck You." : "");
+            //im_print(1, 8, "You threw %d candies on the ground%s%s%s%s%s%s%s%s%s%s", game->check.hasTenCandyCounter * 10,
+            //         (game->check.hasTenCandyCounter > 1 && game->check.hasTenCandyCounter < 6) ? "..." : "",
+            //         (game->check.hasTenCandyCounter > 2 && game->check.hasTenCandyCounter < 6) ? "?" : "",
+            //         (game->check.hasTenCandyCounter == 3) ? " :'(" : "",
+            //         (game->check.hasTenCandyCounter == 4) ? " :(" : "",
+            //         (game->check.hasTenCandyCounter == 5) ? " (;_;)" : "",
+            //         (game->check.hasTenCandyCounter == 6) ? ". Please stop." : "",
+            //         (game->check.hasTenCandyCounter == 7) ? ". :/" : "",
+            //         (game->check.hasTenCandyCounter == 8) ? ". >:/" : "",
+            //         (game->check.hasTenCandyCounter == 9) ? ". >:(" : "",
+            //         (game->check.hasTenCandyCounter >= 10) ? ". Fuck You." : "");
+            im_print(1, 8, "You threw %d candies on the ground%s", 
+                game->check.hasTenCandyCounter * 10,
+                getThrowAnim(game->check.hasTenCandyCounter));
     }
 }
 
