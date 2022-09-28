@@ -5,7 +5,7 @@ PROGRAM=clicker
 CFLAGS=-O0 -g -Werror=implicit-function-declaration
 CPPFLAGS=-I$(PLAYGROUND_PATH) -I$(PLAYGROUND_PATH)/externals/include -MMD
 LDFLAGS=-L$(PLAYGROUND_PATH) -L$(PLAYGROUND_PATH)/externals/x86_64-linux-gnu
-LDLIBS=-lpg -lglfw3 -lm
+LDLIBS=-lpg -lglfw3 -lm -ldl -lpthread
 
 OBJS=src/main.o src/game.o src/gui.o tests/test_button.o
 
