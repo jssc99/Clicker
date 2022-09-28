@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "playground.h": "c",
+        "glfw3.h": "c"
+    }
+}
