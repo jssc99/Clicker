@@ -10,9 +10,9 @@
 int main(int argc, char* argv[])
 {
     GLFWwindow* window;
-    pg_backend_glfw_helper_init(&window, "Clicker", pg_config_simple(32, 32, "assets/DB_curses_12x12.png"));
+    pg_backend_glfw_helper_init(&window, "Clicker", pg_config_simple(40, 40, "assets/DB_curses_12x12.png"));
 
-    int testIndex = 0;
+    int testIndex = 1;
 
     Game game = {0};
     game_init(&game);
