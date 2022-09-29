@@ -8,89 +8,181 @@
 
 void game_init(Game *game)
 {
-    game->value = 0;
-    game->candy = 0;
-    game->frames = 0;
-    game->check.hasOneCandy = false;
-    game->check.hasOneCandyCounter = 0;
-    game->check.hasTenCandy = false;
-    game->check.hasTenCandyCounter = 0;
+    game->menu = ON_CANDY_BOX;
 }
 
-const char* getThrowAnim(int counter)
+const char *getThrowAnim(int counter)
 {
-    if (counter > 1 && counter < 2) return "...";
-    else if (counter == 3)          return "... :'(";
-    else if (counter == 4)          return "...  :'(";
-    else if (counter == 5)          return "...   :'(";
-    else return "";
-    //      (game->check.hasTenCandyCounter > 1 && game->check.hasTenCandyCounter < 6) ? "..." : "",
-    //                 (game->check.hasTenCandyCounter > 2 && game->check.hasTenCandyCounter < 6) ? "?" : "",
-    //                 (game->check.hasTenCandyCounter == 3) ? " :'(" : "",
-    //                 (game->check.hasTenCandyCounter == 4) ? " :(" : "",
-    //                 (game->check.hasTenCandyCounter == 5) ? " (;_;)" : "",
-    //                 (game->check.hasTenCandyCounter == 6) ? ". Please stop." : "",
-    //                 (game->check.hasTenCandyCounter == 7) ? ". :/" : "",
-    //                 (game->check.hasTenCandyCounter == 8) ? ". >:/" : "",
-    //                 (game->check.hasTenCandyCounter == 9) ? ". >:(" : "",
-    //                 (game->check.hasTenCandyCounter >= 10) ? ". Fuck You." : "");
+    if (counter == 2)
+        return "...";
+    else if (counter == 3)
+        return "...?";
+    else if (counter == 4)
+        return "...? :(";
+    else if (counter == 5)
+        return "...? :'(";
+    else if (counter == 6)
+        return "...? (;_;)";
+    else if (counter == 7)
+        return ". Please stop.";
+    else if (counter == 8)
+        return ". :/";
+    else if (counter == 9)
+        return ". >:/";
+    else if (counter == 10)
+        return ". >:(";
+    else if (counter >= 11)
+        return ". Fuck You.";
+    else
+        return "";
 }
 
 void game_update(Game *game)
 {
+    //////////////////////
+    // GAME HEADER HERE //
+    //////////////////////
+
     if ((game->frames += pg_io_get_frame_time()) > 1)
     {
         game->candy++;
-        // game->frames--;
+        // game->frames--; // fast candy if disabled
     }
-    im_print_text(0, 0, "+------------------------------------------------------------------------------+");
-    im_print_text(0, 1, "|");
-    im_print(get_center("Candy count : %d"), 1, "Candy count : %d", game->candy);
-    im_print_text(WIDTH - 1, 1, "|");
-    im_print_text(0, 2, "+------------------------------------------------------------------------------+");
-
-    if (game->candy > 0)
-        game->check.hasOneCandy = true;
-
-    if (game->check.hasOneCandy)
+    im_print(1, 1, "You've got %lu candies", game->candy);
+    if (game->check.firstFeature)
     {
-        if (im_button(1, 4, "Eat all the candies"))
+        im_print_text(0, 0, "+------------------------------------------------------------------------------+");
+        im_print_text(0, 4, "+------------------------------------------------------------------------------+");
+        for (int i = 1; i < 4; i++)
         {
-            game->check.hasOneCandyCounter += game->candy;
+            im_print_text(0, i, "|");
+            im_print_text(30, i, "|");
+            im_print_text(36, i, "|");
+            im_print_text(WIDTH - 1, i, "|");
+            if (game->check.secondFeature)
+                im_print_text(WIDTH - 3, i, "|");
+        }
+        if (game->menu == ON_CANDY_BOX)
+        {
+            im_print_text_greyed(31, 1, " THE ");
+            im_print_text_greyed(31, 2, "CANDY");
+            im_print_text_greyed(31, 3, " BOX ");
+            if (game->check.secondFeature)
+                if (im_button_quiet(WIDTH - 2, 1, "D") ||
+                    im_button_quiet(WIDTH - 2, 2, "B") ||
+                    im_button_quiet(WIDTH - 2, 3, "G"))
+                    game->menu = ON_DEBUG_MENU;
+        }
+        if (game->menu == ON_DEBUG_MENU)
+        {
+            im_print_text_greyed(WIDTH - 2, 1, "D");
+            im_print_text_greyed(WIDTH - 2, 2, "B");
+            im_print_text_greyed(WIDTH - 2, 3, "G");
+            if (im_button_quiet(31, 1, " THE ") ||
+                im_button_quiet(31, 2, "CANDY") ||
+                im_button_quiet(31, 3, " BOX "))
+                game->menu = ON_CANDY_BOX;
+        }
+    }
+    ////////////////////
+    // GAME BODY HERE //
+    ////////////////////
+
+    if (game->menu == ON_CANDY_BOX)
+    {
+        if (game->candy > 0)
+            game->check.hasOneCandy = true;
+
+        if (game->check.hasOneCandy)
+        {
+            if (im_button(1, 6, "Eat all the candies"))
+            {
+                game->hasOneCandyCounter += game->candy;
+                game->candy = 0;
+            }
+            if (game->hasOneCandyCounter)
+                im_print(1, 7, "You have eaten %d %s",
+                         game->hasOneCandyCounter,
+                         (game->hasOneCandyCounter == 1) ? "candy" : "candies");
+        }
+
+        if (game->candy > 10)
+            game->check.hasTenCandy = true;
+
+        if (game->check.hasTenCandy)
+        {
+            if (im_button(1, 9, "Throw 10 candies to the ground") && game->candy >= 10)
+            {
+                game->hasTenCandyCounter++;
+                game->candy -= 10;
+            }
+            if (game->hasTenCandyCounter)
+                im_print(1, 10, "You threw %d candies on the ground%s",
+                         game->hasTenCandyCounter * 10,
+                         getThrowAnim(game->hasTenCandyCounter));
+        }
+
+        if (game->candy > 30)
+            game->check.hasThirtyCandy = true;
+
+        if (game->check.hasThirtyCandy && game->check.firstFeature == 0)
+        {
+            if (im_button(1, 12, "Request a new feature (30 candies)") && game->candy >= 30)
+            {
+                game->check.firstFeature = true;
+                game->candy -= 30;
+            }
+        }
+
+        if (game->check.firstFeature && game->check.secondFeature == 0)
+            im_print_text(1, 13, "You've unlocked a status bar!");
+
+        if (game->check.hasThirtyCandy && game->check.firstFeature && game->check.secondFeature == 0)
+        {
+            if (im_button(1, 12, "Request another feature (5 candies)") && game->candy >= 5)
+            {
+                game->check.secondFeature = true;
+                game->candy -= 5;
+            }
+        }
+
+        if (game->check.secondFeature && game->check.thirdFeature == 0)
+            im_print_text(1, 13, "You've unlocked the debug menu!");
+    }
+
+    // DEBUG MENU //
+
+    else if (game->menu == ON_DEBUG_MENU)
+    {
+        if (im_button(30, 6, "O"))
+        {
+            game->check.DARK_MODE = !game->check.DARK_MODE;
+            if (game->check.DARK_MODE)
+            {
+                pg_set_default_bg_color(0xFF000000);
+                pg_set_default_fg_color(0xFFFFFFFF);
+            }
+            else
+            {
+                pg_set_default_bg_color(0xFFFFFFFF);
+                pg_set_default_fg_color(0xFF000000);
+            }
+        }
+        im_print(32, 6, "%s", (game->check.DARK_MODE) ? "NIGHT" : "DAY");
+
+        if (im_button(1, 6, "Reset candies"))
             game->candy = 0;
-        }
-        if (game->check.hasOneCandyCounter)
-            im_print(1, 5, "You have eaten %d %s", game->check.hasOneCandyCounter, (game->check.hasOneCandyCounter == 1) ? "candy" : "candies");
-    }
+        if (im_button(1, 8, "Reset candies eaten"))
+            game->hasOneCandyCounter = 0;
+        if (im_button(1, 10, "Reset candies thrown"))
+            game->hasTenCandyCounter = 0;
 
-    if (game->candy > 10)
-        game->check.hasTenCandy = true;
-
-    if (game->check.hasTenCandy)
-    {
-        if (im_button(1, 7, "Throw 10 candies to the ground") && game->candy >= 10)
-        {
-            game->check.hasTenCandyCounter += 1;
-            game->candy -= 10;
-        }
-        if (game->check.hasTenCandyCounter)
-            //im_print(1, 8, "You threw %d candies on the ground%s%s%s%s%s%s%s%s%s%s", game->check.hasTenCandyCounter * 10,
-            //         (game->check.hasTenCandyCounter > 1 && game->check.hasTenCandyCounter < 6) ? "..." : "",
-            //         (game->check.hasTenCandyCounter > 2 && game->check.hasTenCandyCounter < 6) ? "?" : "",
-            //         (game->check.hasTenCandyCounter == 3) ? " :'(" : "",
-            //         (game->check.hasTenCandyCounter == 4) ? " :(" : "",
-            //         (game->check.hasTenCandyCounter == 5) ? " (;_;)" : "",
-            //         (game->check.hasTenCandyCounter == 6) ? ". Please stop." : "",
-            //         (game->check.hasTenCandyCounter == 7) ? ". :/" : "",
-            //         (game->check.hasTenCandyCounter == 8) ? ". >:/" : "",
-            //         (game->check.hasTenCandyCounter == 9) ? ". >:(" : "",
-            //         (game->check.hasTenCandyCounter >= 10) ? ". Fuck You." : "");
-            im_print(1, 8, "You threw %d candies on the ground%s", 
-                game->check.hasTenCandyCounter * 10,
-                getThrowAnim(game->check.hasTenCandyCounter));
+        if (im_button(1, HEIGTH - 4, "EXIT GAME"))
+            game->check.EXIT = true;
     }
 }
 
 void game_shutdown(Game *game)
 {
+    // rm *
 }

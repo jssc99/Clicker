@@ -18,21 +18,30 @@ int get_center(const char *text)
     return WIDTH / 2 - (strlen(text) / 2);
 }
 
-int im_print_text_clicked(int x, int y, const char *text)
-{
-    int mX, mY;
-    pg_get_mouse_coords(&mX, &mY);
-    for (int i = 0; i < strlen(text); i++)
-        pg_put_char_ex(x + i, y, text[i], 0xFFFFFFFF, 0xFF000000, PG_COL_REPLACE);
-    return 0;
-}
-
 int im_print_text(int x, int y, const char *text)
 {
     int mX, mY;
     pg_get_mouse_coords(&mX, &mY);
     for (int i = 0; i < strlen(text); i++)
         pg_put_char(x + i, y, text[i], PG_COL_DEFAULT);
+    return 0;
+}
+
+int im_print_text_clicked(int x, int y, const char *text)
+{
+    int mX, mY;
+    pg_get_mouse_coords(&mX, &mY);
+    for (int i = 0; i < strlen(text); i++)
+        pg_put_char_ex(x + i, y, text[i], 0xFFFFFFFF, 0xFF000000, PG_COL_DEFAULT);
+    return 0;
+}
+
+int im_print_text_greyed(int x, int y, const char *text)
+{
+    int mX, mY;
+    pg_get_mouse_coords(&mX, &mY);
+    for (int i = 0; i < strlen(text); i++)
+        pg_put_char_ex(x + i, y, text[i], 0xFF000000, 0xFFD3D3D3, PG_COL_REPLACE);
     return 0;
 }
 
@@ -58,7 +67,18 @@ bool im_button(int x, int y, const char *text)
     }
     else
     {
-        im_print_text(x, y, text);
+        im_print_text_greyed(x, y, text);
         return false;
     }
+}
+
+bool im_button_quiet(int x, int y, const char *text)
+{
+    int mX, mY;
+    pg_get_mouse_coords(&mX, &mY);
+    im_print_text(x, y, text);
+    if ((mX >= x && mX <= (x + strlen(text) - 1)) && mY == y && pg_io_mouse_button_released(GLFW_MOUSE_BUTTON_LEFT))
+        return true;
+    else
+        return false;
 }

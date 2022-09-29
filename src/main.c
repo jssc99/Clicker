@@ -31,7 +31,8 @@ int main(int argc, char *argv[])
             test_button_update();
             break;
 
-        case 2: /*test */
+        case 2:
+            /*test */
             break;
 
         default:
@@ -40,6 +41,9 @@ int main(int argc, char *argv[])
 
         pg_render();
         glfwSwapBuffers(window);
+
+        if (game.check.EXIT) 
+            glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 
     game_shutdown(&game);
