@@ -10,13 +10,13 @@ typedef struct Check
     _Bool hasOneCandy;
     _Bool hasTenCandy;
     _Bool hasThirtyCandy;
-    _Bool hasUnlockedLollypop;
 } Check;
 
 typedef enum Menu
 {
     ON_CANDY_BOX,
     ON_DEBUG_MENU,
+    ON_SAVE_MENU,
     ON_MERCHANT,
     ON_OTHER
 } Menu;
@@ -33,6 +33,11 @@ typedef struct Game
     int hasTenCandyCounter;
 } Game;
 
-void game_init(Game* game);
-void game_update(Game* game);
-void game_shutdown(Game* game);
+void game_init(Game *game);
+void game_update(Game *game);
+void game_shutdown(Game *game);
+
+void header_button_candybox(Game *game);
+void header_button_merchant(Game *game);
+void header_button_savemenu(Game *game);
+void header_button_debugmenu(Game *game);

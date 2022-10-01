@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
         pg_render();
         glfwSwapBuffers(window);
 
-        if (game.check.EXIT_GAME) 
+        if (game.check.EXIT_GAME)
             glfwSetWindowShouldClose(window, GLFW_TRUE);
     }
 

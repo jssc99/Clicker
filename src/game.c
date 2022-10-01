@@ -37,6 +37,38 @@ const char *getThrowAnim(int counter)
         return "";
 }
 
+void header_button_candybox(Game *game)
+{
+    if (im_button_quiet(31, 1, " THE ") ||
+        im_button_quiet(31, 2, "CANDY") ||
+        im_button_quiet(31, 3, " BOX "))
+        game->menu = ON_CANDY_BOX;
+}
+
+void header_button_merchant(Game *game)
+{
+    if (im_button_quiet(37, 1, "MERC") ||
+        im_button_quiet(37, 2, "HANT") ||
+        im_button_quiet(37, 3, "SHOP"))
+        game->menu = ON_MERCHANT;
+}
+
+void header_button_savemenu(Game *game)
+{
+    if (im_button_quiet(WIDTH - 4, 1, "S") ||
+        im_button_quiet(WIDTH - 4, 2, "V") ||
+        im_button_quiet(WIDTH - 4, 3, "E"))
+        game->menu = ON_SAVE_MENU;
+}
+
+void header_button_debugmenu(Game *game)
+{
+    if (im_button_quiet(WIDTH - 2, 1, "D") ||
+        im_button_quiet(WIDTH - 2, 2, "B") ||
+        im_button_quiet(WIDTH - 2, 3, "G"))
+        game->menu = ON_DEBUG_MENU;
+}
+
 void game_update(Game *game)
 {
 
@@ -50,8 +82,8 @@ void game_update(Game *game)
         // game->frames--; // fast candy if disabled
     }
     im_print(1, 1, "You've got %lu cand%s", game->candy, (game->candy <= 1) ? "y" : "ies");
-    if (game->check.hasUnlockedLollypop)
-        im_print(1, 1, "You've got %lu lollypop%s", game->lollypop, (game->lollypop == 1) ? "" : "s");
+    if (game->lollypop)
+        im_print(1, 2, "You've got %lu lollypop%s", game->lollypop, (game->lollypop == 1) ? "" : "s");
 
     if (game->featuresUnlocked)
     {
@@ -65,27 +97,56 @@ void game_update(Game *game)
             im_print_text(WIDTH - 1, i, "|");
             if (game->featuresUnlocked)
                 im_print_text(WIDTH - 3, i, "|");
+            if (game->featuresUnlocked >= 3)
+                im_print_text(WIDTH - 5, i, "|");
+            if (game->featuresUnlocked >= 4)
+                im_print_text(41, i, "|");
         }
+
         if (game->menu == ON_CANDY_BOX)
         {
             im_print_text_greyed(31, 1, " THE ");
             im_print_text_greyed(31, 2, "CANDY");
             im_print_text_greyed(31, 3, " BOX ");
             if (game->featuresUnlocked >= 2)
-                if (im_button_quiet(WIDTH - 2, 1, "D") ||
-                    im_button_quiet(WIDTH - 2, 2, "B") ||
-                    im_button_quiet(WIDTH - 2, 3, "G"))
-                    game->menu = ON_DEBUG_MENU;
+                header_button_debugmenu(game);
+            if (game->featuresUnlocked >= 3)
+                header_button_savemenu(game);
+            if (game->featuresUnlocked >= 4)
+                header_button_merchant(game);
         }
+
         if (game->menu == ON_DEBUG_MENU)
         {
             im_print_text_greyed(WIDTH - 2, 1, "D");
             im_print_text_greyed(WIDTH - 2, 2, "B");
             im_print_text_greyed(WIDTH - 2, 3, "G");
-            if (im_button_quiet(31, 1, " THE ") ||
-                im_button_quiet(31, 2, "CANDY") ||
-                im_button_quiet(31, 3, " BOX "))
-                game->menu = ON_CANDY_BOX;
+            header_button_candybox(game);
+            if (game->featuresUnlocked >= 3)
+                header_button_savemenu(game);
+            if (game->featuresUnlocked >= 4)
+                header_button_merchant(game);
+        }
+
+        if (game->menu == ON_SAVE_MENU)
+        {
+            im_print_text_greyed(WIDTH - 4, 1, "S");
+            im_print_text_greyed(WIDTH - 4, 2, "V");
+            im_print_text_greyed(WIDTH - 4, 3, "E");
+            header_button_candybox(game);
+            header_button_debugmenu(game);
+            if (game->featuresUnlocked >= 4)
+                header_button_merchant(game);
+        }
+
+        if (game->menu == ON_MERCHANT)
+        {
+            im_print_text_greyed(37, 1, "MERC");
+            im_print_text_greyed(37, 2, "HANT");
+            im_print_text_greyed(37, 3, "SHOP");
+            header_button_candybox(game);
+            header_button_savemenu(game);
+            header_button_debugmenu(game);
         }
     }
 
@@ -140,7 +201,7 @@ void game_update(Game *game)
         }
 
         if (game->featuresUnlocked == 1)
-            im_print_text(1, 13, "You've unlocked a status bar!");
+            im_print_text(1, 13, "You've unlocked the status bar!");
 
         if (game->check.hasThirtyCandy && game->featuresUnlocked == 1)
         {
@@ -156,7 +217,7 @@ void game_update(Game *game)
 
         if (game->check.hasThirtyCandy && game->featuresUnlocked == 2)
         {
-            if (im_button(1, 12, "Request another feature (5 candies)") && game->candy >= 5)
+            if (im_button(1, 12, "And another one (5 candies)") && game->candy >= 5)
             {
                 game->featuresUnlocked++;
                 game->candy -= 5;
@@ -164,6 +225,18 @@ void game_update(Game *game)
         }
 
         if (game->featuresUnlocked == 3)
+            im_print_text(1, 13, "You've unlocked the save menu!");
+
+        if (game->check.hasThirtyCandy && game->featuresUnlocked == 3)
+        {
+            if (im_button(1, 12, "A final one please! (5 candies)") && game->candy >= 5)
+            {
+                game->featuresUnlocked++;
+                game->candy -= 5;
+            }
+        }
+
+        if (game->featuresUnlocked == 4)
             im_print_text(1, 13, "You've unlocked the merchant!");
     }
 
@@ -171,7 +244,7 @@ void game_update(Game *game)
 
     else if (game->menu == ON_DEBUG_MENU)
     {
-        if (im_button(30, 6, "O"))
+        if (im_button(32, 6, "O"))
         {
             game->check.DARK_MODE = !game->check.DARK_MODE;
             if (game->check.DARK_MODE)
@@ -185,7 +258,7 @@ void game_update(Game *game)
                 pg_set_default_fg_color(0xFF000000);
             }
         }
-        im_print(32, 6, "%s", (game->check.DARK_MODE) ? "NIGHT" : "DAY");
+        im_print(34, 6, "%s", (game->check.DARK_MODE) ? "NIGHT" : "DAY");
 
         if (im_button(1, 6, "Reset candies"))
             game->candy = 0;
@@ -194,14 +267,32 @@ void game_update(Game *game)
         if (im_button(1, 10, "Reset candies thrown"))
             game->hasTenCandyCounter = 0;
 
+        if (im_button(1, 13, "Reset lollypops"))
+            game->lollypop = 0;
+
         if (im_button(1, HEIGTH - 4, "EXIT GAME"))
             game->check.EXIT_GAME = true;
+    }
+
+    // SAVE MENU //
+
+    else if (game->menu == ON_SAVE_MENU)
+    {
     }
 
     // MERCHANT MENU //
 
     else if (game->menu == ON_MERCHANT)
     {
+        im_print_text(1, 6, "Hello, I'm the candy merchant.");
+        im_print_text(1, 7, "I would do anything for candies.");
+        im_print_text(1, 8, "My lollipops are delicious!");
+
+        if (im_button(1, 30, "One lollypop please! (60 candies)") && game->candy >= 60)
+        {
+            game->lollypop++;
+            game->candy -= 60;
+        }
     }
 }
 
