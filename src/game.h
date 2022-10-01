@@ -6,19 +6,18 @@
 typedef struct Check
 {
     _Bool DARK_MODE;
-    _Bool EXIT;
+    _Bool EXIT_GAME;
     _Bool hasOneCandy;
     _Bool hasTenCandy;
     _Bool hasThirtyCandy;
-    _Bool firstFeature;
-    _Bool secondFeature;
-    _Bool thirdFeature;
+    _Bool hasUnlockedLollypop;
 } Check;
 
 typedef enum Menu
 {
     ON_CANDY_BOX,
     ON_DEBUG_MENU,
+    ON_MERCHANT,
     ON_OTHER
 } Menu;
 
@@ -27,7 +26,9 @@ typedef struct Game
     Check check;
     Menu menu;
     unsigned long int candy;
+    unsigned long int lollypop;
     float frames;
+    int featuresUnlocked;
     int hasOneCandyCounter;
     int hasTenCandyCounter;
 } Game;

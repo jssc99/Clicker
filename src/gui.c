@@ -41,7 +41,7 @@ int im_print_text_greyed(int x, int y, const char *text)
     int mX, mY;
     pg_get_mouse_coords(&mX, &mY);
     for (int i = 0; i < strlen(text); i++)
-        pg_put_char_ex(x + i, y, text[i], 0xFF000000, 0xFFD3D3D3, PG_COL_REPLACE);
+        pg_put_char_ex(x + i, y, text[i], 0xFF000000, 0xFFD3D3D3, PG_COL_DEFAULT);
     return 0;
 }
 

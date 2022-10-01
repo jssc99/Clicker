@@ -39,6 +39,7 @@ const char *getThrowAnim(int counter)
 
 void game_update(Game *game)
 {
+
     //////////////////////
     // GAME HEADER HERE //
     //////////////////////
@@ -48,8 +49,11 @@ void game_update(Game *game)
         game->candy++;
         // game->frames--; // fast candy if disabled
     }
-    im_print(1, 1, "You've got %lu candies", game->candy);
-    if (game->check.firstFeature)
+    im_print(1, 1, "You've got %lu cand%s", game->candy, (game->candy <= 1) ? "y" : "ies");
+    if (game->check.hasUnlockedLollypop)
+        im_print(1, 1, "You've got %lu lollypop%s", game->lollypop, (game->lollypop == 1) ? "" : "s");
+
+    if (game->featuresUnlocked)
     {
         im_print_text(0, 0, "+------------------------------------------------------------------------------+");
         im_print_text(0, 4, "+------------------------------------------------------------------------------+");
@@ -59,7 +63,7 @@ void game_update(Game *game)
             im_print_text(30, i, "|");
             im_print_text(36, i, "|");
             im_print_text(WIDTH - 1, i, "|");
-            if (game->check.secondFeature)
+            if (game->featuresUnlocked)
                 im_print_text(WIDTH - 3, i, "|");
         }
         if (game->menu == ON_CANDY_BOX)
@@ -67,7 +71,7 @@ void game_update(Game *game)
             im_print_text_greyed(31, 1, " THE ");
             im_print_text_greyed(31, 2, "CANDY");
             im_print_text_greyed(31, 3, " BOX ");
-            if (game->check.secondFeature)
+            if (game->featuresUnlocked >= 2)
                 if (im_button_quiet(WIDTH - 2, 1, "D") ||
                     im_button_quiet(WIDTH - 2, 2, "B") ||
                     im_button_quiet(WIDTH - 2, 3, "G"))
@@ -84,6 +88,7 @@ void game_update(Game *game)
                 game->menu = ON_CANDY_BOX;
         }
     }
+
     ////////////////////
     // GAME BODY HERE //
     ////////////////////
@@ -101,9 +106,9 @@ void game_update(Game *game)
                 game->candy = 0;
             }
             if (game->hasOneCandyCounter)
-                im_print(1, 7, "You have eaten %d %s",
+                im_print(1, 7, "You have eaten %d cand%s",
                          game->hasOneCandyCounter,
-                         (game->hasOneCandyCounter == 1) ? "candy" : "candies");
+                         (game->hasOneCandyCounter == 1) ? "y" : "ies");
         }
 
         if (game->candy > 10)
@@ -125,29 +130,41 @@ void game_update(Game *game)
         if (game->candy > 30)
             game->check.hasThirtyCandy = true;
 
-        if (game->check.hasThirtyCandy && game->check.firstFeature == 0)
+        if (game->check.hasThirtyCandy && game->featuresUnlocked == 0)
         {
             if (im_button(1, 12, "Request a new feature (30 candies)") && game->candy >= 30)
             {
-                game->check.firstFeature = true;
+                game->featuresUnlocked++;
                 game->candy -= 30;
             }
         }
 
-        if (game->check.firstFeature && game->check.secondFeature == 0)
+        if (game->featuresUnlocked == 1)
             im_print_text(1, 13, "You've unlocked a status bar!");
 
-        if (game->check.hasThirtyCandy && game->check.firstFeature && game->check.secondFeature == 0)
+        if (game->check.hasThirtyCandy && game->featuresUnlocked == 1)
         {
             if (im_button(1, 12, "Request another feature (5 candies)") && game->candy >= 5)
             {
-                game->check.secondFeature = true;
+                game->featuresUnlocked++;
                 game->candy -= 5;
             }
         }
 
-        if (game->check.secondFeature && game->check.thirdFeature == 0)
+        if (game->featuresUnlocked == 2)
             im_print_text(1, 13, "You've unlocked the debug menu!");
+
+        if (game->check.hasThirtyCandy && game->featuresUnlocked == 2)
+        {
+            if (im_button(1, 12, "Request another feature (5 candies)") && game->candy >= 5)
+            {
+                game->featuresUnlocked++;
+                game->candy -= 5;
+            }
+        }
+
+        if (game->featuresUnlocked == 3)
+            im_print_text(1, 13, "You've unlocked the merchant!");
     }
 
     // DEBUG MENU //
@@ -178,7 +195,13 @@ void game_update(Game *game)
             game->hasTenCandyCounter = 0;
 
         if (im_button(1, HEIGTH - 4, "EXIT GAME"))
-            game->check.EXIT = true;
+            game->check.EXIT_GAME = true;
+    }
+
+    // MERCHANT MENU //
+
+    else if (game->menu == ON_MERCHANT)
+    {
     }
 }
 
