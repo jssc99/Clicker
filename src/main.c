@@ -4,8 +4,9 @@
 #include <playground.h>
 #include <playground_backend_glfw.h>
 
-#include "game.h"
-#include "../tests/test_button.h"
+#include "game.h"/*
+#include "../tests/test_button.c"
+#include "../tests/test_save.c"*/
 
 int main(int argc, char *argv[])
 {
@@ -26,14 +27,14 @@ int main(int argc, char *argv[])
         pg_clear_all();
 
         switch (testIndex)
-        {
+        {/*
         case 1:
             test_button_update();
             break;
 
         case 2:
-            /*test */
-            break;
+            test_save_update();
+            break;*/
 
         default:
             game_update(&game);

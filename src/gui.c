@@ -18,6 +18,12 @@ int get_center(const char *text)
     return WIDTH / 2 - (strlen(text) / 2);
 }
 
+void clear_line(int line)
+{
+    for (int i = 0; i < WIDTH; i++)
+        pg_put_char(i, line, ' ', PG_COL_DEFAULT); 
+}
+
 int im_print_text(int x, int y, const char *text)
 {
     int mX, mY;
