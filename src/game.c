@@ -8,14 +8,17 @@
 
 void game_init(Game *game)
 {
-    game->menu = ON_FORGE;
+    game->menu = ON_CANDY_BOX;
 }
 
 void game_save(Game *game, const char *filename)
 {
     FILE *save = fopen(filename, "w");
     if (save == NULL)
+    {
         printf("error saving game\n");
+        return;
+    }
     fwrite(game, sizeof(Game), 1, save);
     fclose(save);
 }
@@ -24,7 +27,10 @@ void game_load(Game *game, const char *filename)
 {
     FILE *save = fopen(filename, "r");
     if (save == NULL)
+    {
         printf("error loading save\n");
+        return;
+    }
     fread(game, sizeof(Game), 1, save);
     fclose(save);
 }
@@ -55,127 +61,91 @@ const char *getThrowAnim(int counter)
         return "";
 }
 
-void print_file(int x, int y, const char *filename)
-{
-    FILE *file = fopen(filename, "r");
-    if (file == NULL)
-        printf("error printing file\n");
-    char buffer[254], c;
-    fseek(file, 0, SEEK_END);
-    int size = ftell(file);
-    fseek(file, 0, SEEK_SET);
-    for (int i = 0; i != size; i++)
-    {
-        for (int f = 0; i != size; c = scanf(file), f++)
-            im_print(x + f, y + i, "%c", c);
-    }
-    fclose(file);
-}
-
-void change_bg_fg(Game *game)
-{
-    if (game->check.DARK_MODE)
-    {
-        pg_set_default_bg_color(0xFF000000);
-        pg_set_default_fg_color(0xFFFFFFFF);
-    }
-    else
-    {
-        pg_set_default_bg_color(0xFFFFFFFF);
-        pg_set_default_fg_color(0xFF000000);
-    }
-}
-
 void header_button_candybox(Game *game)
 {
-    if (im_button_quiet(31, 1, " THE ") ||
-        im_button_quiet(31, 2, "CANDY") ||
-        im_button_quiet(31, 3, " BOX "))
+    if (im_big_button_quiet(31, 1, " THE ", "CANDY", " BOX "))
         game->menu = ON_CANDY_BOX;
 }
 
 void header_button_forge(Game *game)
 {
-    if (im_button_quiet(37, 1, "LOLLY") ||
-        im_button_quiet(37, 2, " POP ") ||
-        im_button_quiet(37, 3, "FORGE"))
+    if (im_big_button_quiet(37, 1, "LOLLY", " POP ", "FORGE"))
         game->menu = ON_FORGE;
+}
+
+void header_button_merchant(Game *game)
+{
+    if (im_big_button_quiet(43, 1, "MERC", "HANT", "SHOP"))
+        game->menu = ON_MERCHANT;
 }
 
 void header_button_savemenu(Game *game)
 {
-    if (im_button_quiet(WIDTH - 4, 1, "S") ||
-        im_button_quiet(WIDTH - 4, 2, "V") ||
-        im_button_quiet(WIDTH - 4, 3, "E"))
+    if (im_big_button_quiet(WIDTH - 4, 1, "S", "V", "E"))
         game->menu = ON_SAVE_MENU;
 }
 
 void header_button_debugmenu(Game *game)
 {
-    if (im_button_quiet(WIDTH - 2, 1, "D") ||
-        im_button_quiet(WIDTH - 2, 2, "B") ||
-        im_button_quiet(WIDTH - 2, 3, "G"))
+    if (im_big_button_quiet(WIDTH - 2, 1, "D", "B", "G"))
         game->menu = ON_DEBUG_MENU;
 }
 
 void draw_header(Game *game)
 {
+
     im_print_text(0, 0, "+------------------------------------------------------------------------------+");
     im_print_text(0, 4, "+------------------------------------------------------------------------------+");
-    for (int i = 1; i < 4; i++)
-    {
-        im_print_text(0, i, "|");
-        im_print_text(30, i, "|");
-        im_print_text(36, i, "|");
-        im_print_text(WIDTH - 1, i, "|");
-        if (game->featuresUnlocked >= 2)
-            im_print_text(WIDTH - 3, i, "|");
-        if (game->featuresUnlocked >= 3)
-            im_print_text(WIDTH - 5, i, "|");
-        if (game->featuresUnlocked >= 4)
-            im_print_text(42, i, "|");
-    }
+    im_triple_print_text(0, 1, "|"); // header box
+    im_triple_print_text(WIDTH - 1, 1, "|");
+    im_triple_print_text(30, 1, "|");
+    im_triple_print_text(36, 1, "|"); // candy box delimiters
+    if (game->featuresUnlocked >= 2)
+        im_triple_print_text(WIDTH - 3, 1, "|"); // debug delims
+    if (game->featuresUnlocked >= 3)
+        im_triple_print_text(WIDTH - 5, 1, "|"); // save delims
+    if (game->featuresUnlocked >= 4)
+        im_triple_print_text(42, 1, "|"); // forge delims
+    if (game->featuresUnlocked >= 5)
+        im_triple_print_text(47, 1, "|"); // merchant delims
+
+    // header buttons
 
     if (game->featuresUnlocked >= 1)
         if (game->menu != ON_CANDY_BOX)
             header_button_candybox(game);
         else
-        {
-            im_print_text_greyed(31, 1, " THE ");
-            im_print_text_greyed(31, 2, "CANDY");
-            im_print_text_greyed(31, 3, " BOX ");
-        }
+            im_big_print_text_greyed(31, 1, " THE ", "CANDY", " BOX ");
+
     if (game->featuresUnlocked >= 2)
         if (game->menu != ON_DEBUG_MENU)
             header_button_debugmenu(game);
         else
-        {
-            im_print_text_greyed(WIDTH - 2, 1, "D");
-            im_print_text_greyed(WIDTH - 2, 2, "B");
-            im_print_text_greyed(WIDTH - 2, 3, "G");
-        }
+            im_big_print_text_greyed(WIDTH - 2, 1, "D", "B", "G");
+
     if (game->featuresUnlocked >= 3)
         if (game->menu != ON_SAVE_MENU)
             header_button_savemenu(game);
         else
-        {
-            im_print_text_greyed(WIDTH - 4, 1, "S");
-            im_print_text_greyed(WIDTH - 4, 2, "V");
-            im_print_text_greyed(WIDTH - 4, 3, "E");
-        }
+            im_big_print_text_greyed(WIDTH - 4, 1, "S", "V", "E");
+
     if (game->featuresUnlocked >= 4)
         if (game->menu != ON_FORGE)
             header_button_forge(game);
         else
-        {
-            im_print_text_greyed(37, 1, "LOLLY");
-            im_print_text_greyed(37, 2, " POP ");
-            im_print_text_greyed(37, 3, "FORGE");
-        }
+            im_big_print_text_greyed(37, 1, "LOLLY", " POP ", "FORGE");
+
+    if (game->featuresUnlocked >= 5)
+        if (game->menu != ON_MERCHANT)
+            header_button_merchant(game);
+        else
+            im_big_print_text_greyed(43, 1, "MERC", "HANT", "SHOP");
 }
 
 void draw_candybox(Game *game)
 {
+    // Eat Candy
+
     if (game->candy > 0)
         game->check.hasOneCandy = true;
 
@@ -191,6 +161,8 @@ void draw_candybox(Game *game)
                      game->hasOneCandyCounter,
                      (game->hasOneCandyCounter == true) ? "y" : "ies");
     }
+
+    // Throw Candy
 
     if (game->candy > 10)
         game->check.hasTenCandy = true;
@@ -213,118 +185,118 @@ void draw_candybox(Game *game)
     if (game->candy > 30)
         game->check.hasThirtyCandy = true;
 
-    if (game->check.hasThirtyCandy && game->featuresUnlocked == 3)
-    {
-        if (im_button(1, 12, "A final one please! (5 candies)") && game->candy >= 5)
-        {
-            game->featuresUnlocked++;
-            game->candy -= 5;
-        }
-    }
-
-    if (game->featuresUnlocked == 4)
-        im_print_text(1, 13, "You've unlocked the merchant!");
-
-    if (game->check.hasThirtyCandy && game->featuresUnlocked == 2)
-    {
-        if (im_button(1, 12, "And another one (5 candies)") && game->candy >= 5)
-        {
-            game->featuresUnlocked++;
-            game->candy -= 5;
-        }
-    }
-
-    if (game->featuresUnlocked == 3)
-        im_print_text(1, 13, "You've unlocked the save menu!");
-
-    if (game->check.hasThirtyCandy && game->featuresUnlocked == 1)
-    {
-        if (im_button(1, 12, "Request another feature (5 candies)") && game->candy >= 5)
-        {
-            game->featuresUnlocked++;
-            game->candy -= 5;
-        }
-    }
-
-    if (game->featuresUnlocked == 2)
-        im_print_text(1, 13, "You've unlocked the debug menu!");
-
-    if (game->check.hasThirtyCandy && game->featuresUnlocked == false)
-    {
-        if (im_button(1, 12, "Request a new feature (30 candies)") && game->candy >= 30)
-        {
-            game->featuresUnlocked++;
-            game->candy -= 30;
-        }
-    }
-
     if (game->featuresUnlocked == 1)
         im_print_text(1, 13, "You've unlocked the status bar!");
+    else if (game->featuresUnlocked == 2)
+        im_print_text(1, 13, "You've unlocked the debug menu!");
+    else if (game->featuresUnlocked == 3)
+        im_print_text(1, 13, "You've unlocked the save menu!");
+    else if (game->featuresUnlocked == 4)
+        im_print_text(1, 13, "You've unlocked the lollypop forge!");
+
+    if (game->check.hasThirtyCandy)
+    {
+        if (game->featuresUnlocked == 3)
+            if (im_button(1, 12, "One final one please! (5 candies)") && game->candy >= 5)
+            {
+                game->featuresUnlocked++;
+                game->candy -= 5;
+            }
+        if (game->featuresUnlocked == 2)
+            if (im_button(1, 12, "And another one (5 candies)") && game->candy >= 5)
+            {
+                game->featuresUnlocked++;
+                game->candy -= 5;
+            }
+        if (game->featuresUnlocked == 1)
+            if (im_button(1, 12, "Request another feature (5 candies)") && game->candy >= 5)
+            {
+                game->featuresUnlocked++;
+                game->candy -= 5;
+            }
+        if (game->featuresUnlocked == false)
+            if (im_button(1, 12, "Request a new feature (30 candies)") && game->candy >= 30)
+            {
+                game->featuresUnlocked++;
+                game->candy -= 30;
+            }
+    }
+
+    // Secret lollypop
+
+    if (game->check.foundCandyBoxLolly == false && game->featuresUnlocked)
+    {
+        if (im_button_quiet(WIDTH - 4, 4, "---o"))
+        {
+            game->lollypop++;
+            game->check.foundCandyBoxLolly = true;
+        }
+    }
+    else if (game->check.foundCandyBoxLolly)
+        im_print_text(1, 47, "You found the hidden lollypop!");
 }
 
 void draw_forge(Game *game)
-{ /*
-     {
-         im_print_text(1, 9, "|          |         | |       ||_|_________|____                         |");
-         im_print_text(1, 10, "|          |         | |      /||_|_________|___ \\                        |");
-         im_print_text(1, 11, "|          |         | |      \\||_|_________|____/                        |");
-         im_print_text(1, 12, "|          |         | |       || '         '                             |");
-         im_print_text(1, 13, "|          |         | |                                   ______         |");
-         im_print_text(1, 14, "|          |         | |                                .-' ____ '-.      |");
-         im_print_text(1, 15, "|          |         | |                                \\.-'    '-./      |");
-         im_print_text(1, 16, "|          |         | |                 __|_________|___\\        /       |");
-         im_print_text(1, 17, "|          |         | |                |__|_________|___/        \\       |");
-         im_print_text(1, 18, "|          |         | |                   '         '  /'-.____.-'\\      |");
-         im_print_text(1, 19, "|    ______|         | |_______                         '-.______.-'      |");
-         im_print_text(1, 20, "|   /      |_________|/       /\\                                          |");
-         im_print_text(1, 21, "|  /                         / /                            ||            |");
-         im_print_text(1, 22, "| /_________________________/ /                            /  \\           |");
-         im_print_text(1, 23, "|/__________________________\\/                             \\  /     ____  |");
-         im_print_text(1, 24, "|                                                          .\\/.    |____| |");
-         im_print_text(1, 25, "|                                    _____                  /\\      :||:  |");
-         im_print_text(1, 26, "|              )                    / ~~~ \\                /  \\      ||   |");
-         im_print_text(1, 27, "|             (                     \\ 'c' /               /    \\     ||   |");
-         im_print_text(1, 28, "|    _____)_________________    ____/\\_-_/\\____          /      \\         |");
-         im_print_text(1, 29, "|   /  __(__________)____  /|  /    /     \\    \\    _________________     |");
-         im_print_text(1, 30, "|  /  :@@@@@@@@@@@@(@@@@: / | (   )|       |(   )   \\________________\\    |");
-         im_print_text(1, 31, "|  :. '-.@@@@@@@@@@@@.-' .: | |   ||       ||   |    \\               /    |");
-         im_print_text(1, 32, "|  : '.  '-.______.-'  .' : |  \\   )|     |(   /    __'-._________.-'     |");
-         im_print_text(1, 33, "|__:   '-.__________.-'   : |___\\==||_____||==/____|  |_____||  |_________|");
-         im_print_text(1, 34, "|  :     |----------|     : |---/  |+-----++:0+----|  |    .'|  |_        |");
-         im_print_text(1, 35, "|  :     |----------|     :/'---UUUU+--+--+0000----|  |   |\\.'__'.\\       |");
-         im_print_text(1, 36, "|  '-.   |----------|   .-'         |  |  |        |__|    \\|_____|       |");
-         im_print_text(1, 37, "|     '-.|__________|.-'            |  |  |                               |");
-         im_print_text(1, 38, "|                                   |  |  |                               |");
-         im_print_text(1, 39, "|                                   |__|__|                               |");
-         im_print_text(1, 40, "|                                   (__|__)                               |");
-         im_print_text(1, 41, "|                                                                         |");
-         im_print_text(1, 42, "|                                                                         |");
-         im_print_text(1, 43, "|_________________________________________________________________________|");
-     }*/
+{
     print_file(1, 9, "assets/forge.txt");
 
-    im_print_text(1, 6, "Hello, I'm the lollypop maker.");
-    im_print_text(1, 7, "I would do anything for some candies.");
-    im_print_text(1, 8, "My lollypops are delicious!");
+    if (game->forgeDialog == 0)
+    {
+        im_print_text(1, 6, "Hello, I'm the lollypop maker.");
+        im_print_text(1, 7, "I would do anything for some candies.");
+        im_print_text(1, 8, "My lollypops are delicious!");
+    }
+    else if (game->forgeDialog == 1)
+        im_print_text(1, 7, "Here you go.");
+    else if (game->forgeDialog == 2)
+        im_print_text(1, 7, "My lollypops are delicious!");
+    else if (game->forgeDialog == 3)
+        im_print_text(1, 7, "Somebody likes lollypops ahaha.");
+    else if (game->forgeDialog == 4 || game->forgeDialog == 5)
+    {
+        im_print_text(1, 6, "You seen to have a lot of candies on you.");
+        im_print_text(1, 7, "I think you should also give a visit to a friend of mine.");
+        im_print_text(1, 8, "He's a merchant next door, he'll have lots of stuff to sell to you!");
+        if (game->featuresUnlocked == 4)
+            game->featuresUnlocked++;
+    }
+    else if (game->forgeDialog >= 6)
+        im_print_text(1, 7, "Make sure you give a visit to my good friend the merchant.");
 
     if (im_button(1, 45, "One lollypop please! (60 candies)") && game->candy >= 60)
     {
-        game->lollypop++;
         game->candy -= 60;
-        clear_line(6);
-        clear_line(7);
-        clear_line(8);
-        im_print_text(1, 7, "Here you go.");
+        game->lollypop++;
+        game->forgeDialog++;
     }
 
     if (game->check.foundForgeLolly == false)
+    {
         if (im_button_quiet(12, 36, "---o"))
         {
             game->lollypop++;
             game->check.foundForgeLolly = true;
         }
-        else
-            im_print_text(1, 47, "You found the hidden lollypop!");
+    }
+    else
+        im_print_text(1, 47, "You found the hidden lollypop!");
+}
+
+void draw_merchant(Game *game)
+{
+    print_file(1, 9, "assets/merchant.txt");
+    im_print_text(1, 7, "Go away, i'm currently under construction.");
+
+    if (game->check.foundMerchantLolly == false)
+    {
+        if (im_big_button_quiet(59, 19, "o", "|", "|"))
+        {
+            game->lollypop++;
+            game->check.foundMerchantLolly = true;
+        }
+    }
+    else
+        im_print_text(1, 8, "Hey! My lollypop monocle!");
 }
 
 void draw_savemenu(Game *game)
@@ -333,7 +305,7 @@ void draw_savemenu(Game *game)
         game_save(game, "save.bin");
     if (im_button(1, 8, "Load binary"))
         game_load(game, "save.bin");
-    change_bg_fg(game);
+    change_bg_fg(game->check.DARK_MODE);
 
     if (im_button(1, HEIGTH - 4, "EXIT GAME"))
         game->check.EXIT_GAME = true;
@@ -344,7 +316,7 @@ void draw_debugmenu(Game *game)
     if (im_button(32, 6, "O"))
     {
         game->check.DARK_MODE = !game->check.DARK_MODE;
-        change_bg_fg(game);
+        change_bg_fg(game->check.DARK_MODE);
     }
     im_print(34, 6, "DARK O%s", (game->check.DARK_MODE) ? "N" : "FF");
 
@@ -357,48 +329,60 @@ void draw_debugmenu(Game *game)
 
     if (im_button(1, 13, "Reset lollypops"))
         game->lollypop = 0;
+    if (im_button(1, 15, "Reset forge dialog"))
+        game->forgeDialog = 0;
+    if (im_button(1, 17, "Reset secret lollypops"))
+    {
+        game->check.foundCandyBoxLolly = false;
+        game->check.foundForgeLolly = false;
+        game->check.foundMerchantLolly = false;
+    }
 }
 
 void game_update(Game *game)
 {
-
-    //////////////////////
-    // GAME HEADER HERE //
-    //////////////////////
-
     if ((game->frames += pg_io_get_frame_time()) > 1)
     {
         game->candy++;
         // game->frames--; // fast candy if disabled
     }
+
+    // GAME HEADER
+
     im_print(1, 1, "You've got %lu cand%s", game->candy, (game->candy <= 1) ? "y" : "ies");
     if (game->lollypop)
         im_print(1, 2, "You've got %lu lollypop%s", game->lollypop, (game->lollypop == 1) ? "" : "s");
 
     if (game->featuresUnlocked)
-    {
         draw_header(game);
-    }
 
-    ////////////////////
-    // GAME BODY HERE //
-    ////////////////////
+    // GAME BODY
 
-    if (game->menu == ON_CANDY_BOX)
+    switch (game->menu)
     {
+    case ON_CANDY_BOX:
         draw_candybox(game);
-    }
-    else if (game->menu == ON_DEBUG_MENU)
-    {
+        break;
+
+    case ON_DEBUG_MENU:
         draw_debugmenu(game);
-    }
-    else if (game->menu == ON_SAVE_MENU)
-    {
+        break;
+
+    case ON_SAVE_MENU:
         draw_savemenu(game);
-    }
-    else if (game->menu == ON_FORGE)
-    {
+        break;
+
+    case ON_FORGE:
         draw_forge(game);
+        break;
+
+    case ON_MERCHANT:
+        draw_merchant(game);
+        break;
+
+    default:
+        printf("error menu\n");
+        break;
     }
 }
 
