@@ -14,7 +14,6 @@
 typedef struct Check
 {
     bool DARK_MODE;
-    bool DEBUG_MODE;
     bool EXIT_GAME;
 
     bool hasOneCandy;
@@ -40,7 +39,7 @@ typedef struct Counter
     float frames;
     float freq;
     float timer;
-    unsigned long int number;
+    unsigned long int amount;
 } Counter;
 
 typedef struct Game

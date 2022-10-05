@@ -9,12 +9,8 @@ void draw_debugmenu(Game *game)
     }
     im_print((WIDTH / 2) + 2, 6, "DARK O%s", (game->check.DARK_MODE) ? "N" : "FF");
 
-    if (im_button(WIDTH / 2, 8, "O"))
-        game->check.DEBUG_MODE = !game->check.DEBUG_MODE;
-    im_print((WIDTH / 2) + 2, 8, "DEBUG MODE O%s", (game->check.DEBUG_MODE) ? "N" : "FF");
-
     if (im_button(1, 6, "Reset candies"))
-        game->candy.number = 0;
+        game->candy.amount = 0;
     if (im_button(1, 8, "Reset candies eaten"))
         game->candyEaten = 0;
     if (im_button(1, 10, "Reset candies thrown"))

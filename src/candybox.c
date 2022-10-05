@@ -30,15 +30,15 @@ void draw_candybox(Game *game)
 {
     // Eat Candy
 
-    if (game->candy.number > 0)
+    if (game->candy.amount > 0)
         game->check.hasOneCandy = true;
 
     if (game->check.hasOneCandy)
     {
         if (im_button(1, 6, "Eat all the candies"))
         {
-            game->candyEaten += game->candy.number;
-            game->candy.number = 0;
+            game->candyEaten += game->candy.amount;
+            game->candy.amount = 0;
         }
         if (game->candyEaten)
             im_print(1, 7, "You have eaten %d cand%s", game->candyEaten,
@@ -47,15 +47,15 @@ void draw_candybox(Game *game)
 
     // Throw Candy
 
-    if (game->candy.number > 9)
+    if (game->candy.amount > 9)
         game->check.hasTenCandy = true;
 
     if (game->check.hasTenCandy)
     {
-        if (im_button(1, 9, "Throw 10 candies to the ground") && game->candy.number >= 10)
+        if (im_button(1, 9, "Throw 10 candies to the ground") && game->candy.amount >= 10)
         {
             game->candyThrown++;
-            game->candy.number -= 10;
+            game->candy.amount -= 10;
         }
         if (game->candyThrown)
             im_print(1, 10, "You threw %d candies on the ground%s",
@@ -65,7 +65,7 @@ void draw_candybox(Game *game)
 
     // Features
 
-    if (game->candy.number > 30)
+    if (game->candy.amount > 30)
         game->check.hasThirtyCandy = true;
 
     if (game->featuresUnlocked == 1)
@@ -80,28 +80,28 @@ void draw_candybox(Game *game)
     if (game->check.hasThirtyCandy)
     {
         if (game->featuresUnlocked == 3)
-            if (im_button(1, 12, "One final one please! (5 candies)") && game->candy.number >= 5)
+            if (im_button(1, 12, "One final one please! (5 candies)") && game->candy.amount >= 5)
             {
                 game->featuresUnlocked++;
-                game->candy.number -= 5;
+                game->candy.amount -= 5;
             }
         if (game->featuresUnlocked == 2)
-            if (im_button(1, 12, "And another one (5 candies)") && game->candy.number >= 5)
+            if (im_button(1, 12, "And another one (5 candies)") && game->candy.amount >= 5)
             {
                 game->featuresUnlocked++;
-                game->candy.number -= 5;
+                game->candy.amount -= 5;
             }
         if (game->featuresUnlocked == 1)
-            if (im_button(1, 12, "Request another feature (5 candies)") && game->candy.number >= 5)
+            if (im_button(1, 12, "Request another feature (5 candies)") && game->candy.amount >= 5)
             {
                 game->featuresUnlocked++;
-                game->candy.number -= 5;
+                game->candy.amount -= 5;
             }
         if (game->featuresUnlocked == 0)
-            if (im_button(1, 12, "Request a new feature (30 candies)") && game->candy.number >= 30)
+            if (im_button(1, 12, "Request a new feature (30 candies)") && game->candy.amount >= 30)
             {
                 game->featuresUnlocked++;
-                game->candy.number -= 30;
+                game->candy.amount -= 30;
             }
     }
 

@@ -17,37 +17,37 @@ void draw_basic_box()
     im_print_text(0, 4, "+------------------------------------------------------------------------------+");
 }
 
-void draw_header(Menu* currentMenu, int features)
+void draw_header(Menu* currentMenu, int featuresUnlocked)
 {
     draw_basic_box();
 
     // header buttons
 
-    if (features >= CANDYBOX)
+    if (featuresUnlocked >= CANDYBOX)
     {
         header_button(currentMenu, ON_CANDY_BOX, 31, 1, " THE ", "CANDY", " BOX ");
         im_triple_print_text(36, 1, "|"); // candy box delimiters
     }
 
-    if (features >= DEBUGMENU)
+    if (featuresUnlocked >= DEBUGMENU)
     {
         header_button(currentMenu, ON_DEBUG_MENU, WIDTH - 2, 1, "D", "B", "G");
         im_triple_print_text(WIDTH - 3, 1, "|"); // debug delimiters
     }
 
-    if (features >= SAVEMENU)
+    if (featuresUnlocked >= SAVEMENU)
     {
         header_button(currentMenu, ON_SAVE_MENU, WIDTH - 4, 1, "S", "V", "E");
         im_triple_print_text(WIDTH - 5, 1, "|"); // save delimiters
     }
 
-    if (features >= FORGE)
+    if (featuresUnlocked >= FORGE)
     {
         header_button(currentMenu, ON_FORGE, 37, 1, "LOLLY", " POP ", "FORGE");
         im_triple_print_text(42, 1, "|"); // forge delimiters
     }
 
-    if (features >= MERCHANT)
+    if (featuresUnlocked >= MERCHANT)
     {
         header_button(currentMenu, ON_MERCHANT, 43, 1, "MERC", "HANT", "SHOP");
         im_triple_print_text(47, 1, "|"); // merchant delimiters

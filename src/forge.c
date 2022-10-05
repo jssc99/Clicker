@@ -31,9 +31,9 @@ void draw_forge(Game *game)
 
     // Buy lollypop
 
-    if (im_button(1, 45, "One lollypop please! (60 candies)") && game->candy.number >= 60)
+    if (im_button(1, 45, "One lollypop please! (60 candies)") && game->candy.amount >= 60)
     {
-        game->candy.number -= 60;
+        game->candy.amount -= 60;
         game->lollypop++;
         game->forgeDialog++;
     }
