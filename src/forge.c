@@ -42,7 +42,7 @@ void draw_forge(Game *game)
 
     if (game->check.foundForgeLolly == false)
     {
-        if (im_button_quiet(25, 22, "--o"))
+        if (im_button_quiet(25, 22, "--O"))
         {
             game->lollypop++;
             game->check.foundForgeLolly = true;

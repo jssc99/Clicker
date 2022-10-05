@@ -109,7 +109,7 @@ void draw_candybox(Game *game)
 
     if (game->check.foundCandyBoxLolly == false && game->featuresUnlocked)
     {
-        if (im_button_quiet(WIDTH - 4, 4, "---o"))
+        if (im_button_quiet(WIDTH - 3, 4, "--O"))
         {
             game->lollypop++;
             game->check.foundCandyBoxLolly = true;
