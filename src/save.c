@@ -32,6 +32,19 @@ void draw_savemenu(Game *game)
         game_load(game, "save.bin");
     change_bg_fg(game->check.DARK_MODE);
 
+    // "Secret" Lollypop
+
+    if (game->check.foundSaveLolly == false)
+    {
+        if (im_button_quiet(59, 19, "--o"))
+        {
+            game->lollypop++;
+            game->check.foundSaveLolly = true;
+        }
+    }
+    else
+        im_print_text(1, 16, "You found the not so secret lollypop!");
+
     if (im_button(1, HEIGTH - 4, "EXIT GAME"))
         game->check.EXIT_GAME = true;
 }
