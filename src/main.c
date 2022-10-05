@@ -9,7 +9,10 @@
 int main(int argc, char *argv[])
 {
     GLFWwindow *window;
-    pg_backend_glfw_helper_init(&window, "Clicker", pg_config_simple(WIDTH, HEIGTH, "assets/DB_curses_12x12.png"));
+    char *tile1 = "assets/DB_curses_12x12.png";
+    char *tile2 = "assets/Curses_640x300diag.png";
+    char *tile3 = "assets/Bedstead-10-df.png";
+    pg_backend_glfw_helper_init(&window, "Clicker", pg_config_simple(WIDTH, HEIGTH, tile2));
 
     pg_set_default_bg_color(0xFFFFFFFF);
     pg_set_default_fg_color(0xFF000000);

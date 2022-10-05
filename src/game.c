@@ -11,12 +11,13 @@
 #include "merchant.h"
 #include "save.h"
 #include "debug.h"
+#include "map.h"
 
 void game_init(Game *game)
 {
-    game->candy.amount = 35;
+    game->candy.amount = 10000;
     game->menu = ON_CANDY_BOX;
-    game->candy.freq = 2;
+    game->candy.freq = 1;
 }
 
 void candy_counter(Counter *counter)
@@ -64,6 +65,10 @@ void game_update(Game *game)
 
     case ON_FORGE:
         draw_forge(game);
+        break;
+
+    case ON_MAP:
+        draw_map(game);
         break;
 
     case ON_MERCHANT:

@@ -111,7 +111,8 @@ bool im_button_quiet(int x, int y, const char *text)
     int mX, mY;
     pg_get_mouse_coords(&mX, &mY);
     im_print_text(x, y, text);
-    if ((mX >= x && mX <= (x + strlen(text) - 1)) && mY == y && pg_io_mouse_button_released(GLFW_MOUSE_BUTTON_LEFT))
+    if ((mX >= x && mX <= (x + strlen(text) - 1)) && mY == y &&
+        pg_io_mouse_button_released(GLFW_MOUSE_BUTTON_LEFT))
         return true;
     else
         return false;
@@ -122,6 +123,17 @@ bool im_big_button_quiet(int x, int y, const char *text1, const char *text2, con
     if (im_button_quiet(x, y, text1) ||
         im_button_quiet(x, y + 1, text2) ||
         im_button_quiet(x, y + 2, text3))
+        return true;
+    else
+        return false;
+}
+
+bool im_house_button(int x, int y, int width, int length)
+{
+    int mX, mY;
+    pg_get_mouse_coords(&mX, &mY);
+    if ((mX >= x && mX <= (x + width)) && (mY >= y && mY <= (y + length)) &&
+        pg_io_mouse_button_released(GLFW_MOUSE_BUTTON_LEFT))
         return true;
     else
         return false;

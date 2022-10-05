@@ -2,14 +2,15 @@
 
 #include <stdbool.h>
 
-#define WIDTH 80
+#define WIDTH 105
 #define HEIGTH 65
 
 #define CANDYBOX 1
 #define DEBUGMENU 2
 #define SAVEMENU 3
-#define FORGE 4
-#define MERCHANT 5
+#define MAP 4
+#define FORGE 5
+#define MERCHANT 6
 
 typedef struct Check
 {
@@ -32,7 +33,8 @@ typedef enum Menu
     ON_DEBUG_MENU,
     ON_SAVE_MENU,
     ON_FORGE,
-    ON_MERCHANT
+    ON_MERCHANT,
+    ON_MAP
 } Menu;
 
 typedef struct Counter

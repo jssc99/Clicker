@@ -2,7 +2,7 @@
 
 void draw_forge(Game *game)
 {
-    print_file(1, 9, "assets/forge.txt");
+    print_file(2, 9, "assets/forge.txt");
 
     // Forge dialog
 
@@ -23,11 +23,11 @@ void draw_forge(Game *game)
         im_print_text(1, 6, "You seen to have a lot of candies on you.");
         im_print_text(1, 7, "I think you should also give a visit to a friend of mine.");
         im_print_text(1, 8, "He's a merchant next door, he'll have lots of stuff to sell to you!");
-        if (game->featuresUnlocked == 4)
+        if (game->featuresUnlocked == FORGE)
             game->featuresUnlocked++;
     }
     else if (game->forgeDialog >= 6)
-        im_print_text(1, 7, "Make sure you give a visit to my good friend the merchant.");
+        im_print_text(1, 7, "Make sure you visit my good friend the merchant.");
 
     // Buy lollypop
 
@@ -42,7 +42,7 @@ void draw_forge(Game *game)
 
     if (game->check.foundForgeLolly == false)
     {
-        if (im_button_quiet(12, 36, "---o"))
+        if (im_button_quiet(25, 22, "--o"))
         {
             game->lollypop++;
             game->check.foundForgeLolly = true;

@@ -10,11 +10,11 @@ void header_button(Menu* currentMenu, Menu menu, int x, int y, const char *text1
 
 void draw_basic_box()
 {
-    im_print_text(0, 0, "+------------------------------------------------------------------------------+");
+    im_print_text(0, 0, "+-------------------------------------------------------------------------------------------------------+");
     im_triple_print_text(0, 1, "|");
     im_triple_print_text(30, 1, "|");
     im_triple_print_text(WIDTH - 1, 1, "|");
-    im_print_text(0, 4, "+------------------------------------------------------------------------------+");
+    im_print_text(0, 4, "+-------------------------------------------------------------------------------------------------------+");
 }
 
 void draw_header(Menu* currentMenu, int featuresUnlocked)
@@ -41,15 +41,21 @@ void draw_header(Menu* currentMenu, int featuresUnlocked)
         im_triple_print_text(WIDTH - 5, 1, "|"); // save delimiters
     }
 
+    if (featuresUnlocked >= MAP)
+    {
+        header_button(currentMenu, ON_MAP, 37, 1, "   ", "MAP", "   ");
+        im_triple_print_text(40, 1, "|"); // merchant delimiters
+    }
+
     if (featuresUnlocked >= FORGE)
     {
-        header_button(currentMenu, ON_FORGE, 37, 1, "LOLLY", " POP ", "FORGE");
-        im_triple_print_text(42, 1, "|"); // forge delimiters
+        header_button(currentMenu, ON_FORGE, 41, 1, "LOLLY", " POP ", "FORGE");
+        im_triple_print_text(46, 1, "|"); // forge delimiters
     }
 
     if (featuresUnlocked >= MERCHANT)
     {
-        header_button(currentMenu, ON_MERCHANT, 43, 1, "MERC", "HANT", "SHOP");
-        im_triple_print_text(47, 1, "|"); // merchant delimiters
+        header_button(currentMenu, ON_MERCHANT, 47, 1, "MERC", "HANT", "SHOP");
+        im_triple_print_text(51, 1, "|"); // merchant delimiters
     }
 }

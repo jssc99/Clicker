@@ -75,7 +75,7 @@ void draw_candybox(Game *game)
     else if (game->featuresUnlocked == 3)
         im_print_text(1, 13, "You've unlocked the save menu!");
     else if (game->featuresUnlocked == 4)
-        im_print_text(1, 13, "You've unlocked the lollypop forge!");
+        im_print_text(1, 13, "You've unlocked the map!");
 
     if (game->check.hasThirtyCandy)
     {

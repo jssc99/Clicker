@@ -7,7 +7,7 @@ CPPFLAGS=-I$(PLAYGROUND_PATH) -I$(PLAYGROUND_PATH)/externals/include -MMD
 LDFLAGS=-L$(PLAYGROUND_PATH) -L$(PLAYGROUND_PATH)/externals/x86_64-linux-gnu
 LDLIBS=-lpg -lglfw3 -lm -ldl -lpthread
 
-OBJS=src/main.o src/game.o src/gui.o src/header.o src/candybox.o src/forge.o src/merchant.o src/save.o src/debug.o
+OBJS=src/main.o src/game.o src/gui.o src/header.o src/candybox.o src/forge.o src/merchant.o src/save.o src/debug.o src/map.o
 
 DEPS=$(OBJS:.o=.d)
 

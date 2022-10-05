@@ -15,6 +15,7 @@ int im_big_print_text_greyed(int x, int y, const char *text1, const char *text2,
 bool im_button(int x, int y, const char *text);
 bool im_button_quiet(int x, int y, const char *text);
 bool im_big_button_quiet(int x, int y, const char *text1, const char *text2, const char *text3);
+bool im_house_button(int x, int y, int width, int length);
 
 void change_bg_fg(int status);
 void print_file(int x, int y, const char *filename);
