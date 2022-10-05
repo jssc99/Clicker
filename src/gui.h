@@ -16,7 +16,5 @@ bool im_button(int x, int y, const char *text);
 bool im_button_quiet(int x, int y, const char *text);
 bool im_big_button_quiet(int x, int y, const char *text1, const char *text2, const char *text3);
 
-int get_center(const char *text);
-void clear_line(int line);
 void change_bg_fg(int status);
 void print_file(int x, int y, const char *filename);

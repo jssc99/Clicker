@@ -4,6 +4,8 @@ void draw_forge(Game *game)
 {
     print_file(1, 9, "assets/forge.txt");
 
+    // Forge dialog
+
     if (game->forgeDialog == 0)
     {
         im_print_text(1, 6, "Hello, I'm the lollypop maker.");
@@ -27,12 +29,16 @@ void draw_forge(Game *game)
     else if (game->forgeDialog >= 6)
         im_print_text(1, 7, "Make sure you give a visit to my good friend the merchant.");
 
-    if (im_button(1, 45, "One lollypop please! (60 candies)") && game->candy >= 60)
+    // Buy lollypop
+
+    if (im_button(1, 45, "One lollypop please! (60 candies)") && game->candy.number >= 60)
     {
-        game->candy -= 60;
+        game->candy.number -= 60;
         game->lollypop++;
         game->forgeDialog++;
     }
+
+    // Secret lollypop
 
     if (game->check.foundForgeLolly == false)
     {

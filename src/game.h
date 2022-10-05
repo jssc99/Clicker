@@ -5,9 +5,16 @@
 #define WIDTH 80
 #define HEIGTH 65
 
+#define CANDYBOX 1
+#define DEBUGMENU 2
+#define SAVEMENU 3
+#define FORGE 4
+#define MERCHANT 5
+
 typedef struct Check
 {
     bool DARK_MODE;
+    bool DEBUG_MODE;
     bool EXIT_GAME;
     bool hasOneCandy;
     bool hasTenCandy;
@@ -23,16 +30,22 @@ typedef enum Menu
     ON_DEBUG_MENU,
     ON_SAVE_MENU,
     ON_FORGE,
-    ON_MERCHANT,
-    ON_OTHER
+    ON_MERCHANT
 } Menu;
+
+typedef struct Counter
+{
+    float frames;
+    float freq;
+    float timer;
+    unsigned long int number;
+} Counter;
 
 typedef struct Game
 {
     Check check;
     Menu menu;
-    float frames;
-    unsigned long int candy;
+    Counter candy;
     unsigned long int lollypop;
     int featuresUnlocked;
     int hasOneCandyCounter;

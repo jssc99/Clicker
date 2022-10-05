@@ -26,9 +26,9 @@ void game_load(Game *game, const char *filename)
 
 void draw_savemenu(Game *game)
 {
-    if (im_button(1, 6, "Save binary"))
+    if (im_button(1, 6, "Save game"))
         game_save(game, "save.bin");
-    if (im_button(1, 8, "Load binary"))
+    if (im_button(1, 8, "Load gamesave"))
         game_load(game, "save.bin");
     change_bg_fg(game->check.DARK_MODE);
 

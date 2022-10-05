@@ -3,6 +3,7 @@
         "playground.h": "c",
         "glfw3.h": "c",
         "candybox.h": "c",
-        "merchant.h": "c"
+        "merchant.h": "c",
+        "game.h": "c"
     }
 }

@@ -2,7 +2,9 @@
 
 const char *getThrowAnim(int counter)
 {
-    if (counter == 2)
+    if (counter == 1)
+        return ".";
+    else if (counter == 2)
         return "...";
     else if (counter == 3)
         return "...?";
@@ -20,43 +22,40 @@ const char *getThrowAnim(int counter)
         return ". >:/";
     else if (counter == 10)
         return ". >:(";
-    else if (counter >= 11)
-        return ". Fuck You.";
     else
-        return "";
+        return ". Fuck You.";
 }
 
 void draw_candybox(Game *game)
 {
     // Eat Candy
 
-    if (game->candy > 0)
+    if (game->candy.number > 0)
         game->check.hasOneCandy = true;
 
     if (game->check.hasOneCandy)
     {
         if (im_button(1, 6, "Eat all the candies"))
         {
-            game->hasOneCandyCounter += game->candy;
-            game->candy = 0;
+            game->hasOneCandyCounter += game->candy.number;
+            game->candy.number = 0;
         }
         if (game->hasOneCandyCounter)
-            im_print(1, 7, "You have eaten %d cand%s",
-                     game->hasOneCandyCounter,
+            im_print(1, 7, "You have eaten %d cand%s", game->hasOneCandyCounter,
                      (game->hasOneCandyCounter == true) ? "y" : "ies");
     }
 
     // Throw Candy
 
-    if (game->candy > 10)
+    if (game->candy.number > 9)
         game->check.hasTenCandy = true;
 
     if (game->check.hasTenCandy)
     {
-        if (im_button(1, 9, "Throw 10 candies to the ground") && game->candy >= 10)
+        if (im_button(1, 9, "Throw 10 candies to the ground") && game->candy.number >= 10)
         {
             game->hasTenCandyCounter++;
-            game->candy -= 10;
+            game->candy.number -= 10;
         }
         if (game->hasTenCandyCounter)
             im_print(1, 10, "You threw %d candies on the ground%s",
@@ -66,7 +65,7 @@ void draw_candybox(Game *game)
 
     // Features
 
-    if (game->candy > 30)
+    if (game->candy.number > 30)
         game->check.hasThirtyCandy = true;
 
     if (game->featuresUnlocked == 1)
@@ -81,28 +80,28 @@ void draw_candybox(Game *game)
     if (game->check.hasThirtyCandy)
     {
         if (game->featuresUnlocked == 3)
-            if (im_button(1, 12, "One final one please! (5 candies)") && game->candy >= 5)
+            if (im_button(1, 12, "One final one please! (5 candies)") && game->candy.number >= 5)
             {
                 game->featuresUnlocked++;
-                game->candy -= 5;
+                game->candy.number -= 5;
             }
         if (game->featuresUnlocked == 2)
-            if (im_button(1, 12, "And another one (5 candies)") && game->candy >= 5)
+            if (im_button(1, 12, "And another one (5 candies)") && game->candy.number >= 5)
             {
                 game->featuresUnlocked++;
-                game->candy -= 5;
+                game->candy.number -= 5;
             }
         if (game->featuresUnlocked == 1)
-            if (im_button(1, 12, "Request another feature (5 candies)") && game->candy >= 5)
+            if (im_button(1, 12, "Request another feature (5 candies)") && game->candy.number >= 5)
             {
                 game->featuresUnlocked++;
-                game->candy -= 5;
+                game->candy.number -= 5;
             }
-        if (game->featuresUnlocked == false)
-            if (im_button(1, 12, "Request a new feature (30 candies)") && game->candy >= 30)
+        if (game->featuresUnlocked == 0)
+            if (im_button(1, 12, "Request a new feature (30 candies)") && game->candy.number >= 30)
             {
                 game->featuresUnlocked++;
-                game->candy -= 30;
+                game->candy.number -= 30;
             }
     }
 

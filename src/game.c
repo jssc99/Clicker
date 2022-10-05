@@ -14,25 +14,35 @@
 
 void game_init(Game *game)
 {
+    game->check.DEBUG_MODE = true;
     game->menu = ON_CANDY_BOX;
+    game->candy.freq = 2;
 }
 
 void game_update(Game *game)
 {
-    if ((game->frames += pg_io_get_frame_time()) > 1)
+    // CANDY COUNTER
+
+    game->candy.timer = 1.0 / game->candy.freq;
+    if ((game->candy.frames += pg_io_get_frame_time()) >= game->candy.timer)
     {
-        game->candy++;
-        // game->frames--; // fast candy if disabled
+        if (game->check.DEBUG_MODE)
+            game->candy.number += 1000;
+        else
+            game->candy.number++;
+        game->candy.frames -= game->candy.timer;
     }
 
     // GAME HEADER
 
-    im_print(1, 1, "You've got %lu cand%s", game->candy, (game->candy <= 1) ? "y" : "ies");
+    im_print(1, 1, "%s %lu cand%s", (game->candy.number >= 10000000000) ? "->" : "You've got",
+             game->candy.number, (game->candy.number <= 1) ? "y" : "ies");
+
     if (game->lollypop)
         im_print(1, 2, "You've got %lu lollypop%s", game->lollypop, (game->lollypop == 1) ? "" : "s");
 
     if (game->featuresUnlocked)
-        draw_header(game);
+        draw_header(&game->menu, game->featuresUnlocked);
 
     // GAME BODY
 
