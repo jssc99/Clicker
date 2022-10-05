@@ -2,31 +2,35 @@
 
 void draw_debugmenu(Game *game)
 {
-    if (im_button(32, 6, "O"))
+    if (im_button(WIDTH / 2, 6, "O"))
     {
         game->check.DARK_MODE = !game->check.DARK_MODE;
         change_bg_fg(game->check.DARK_MODE);
     }
-    im_print(34, 6, "DARK O%s", (game->check.DARK_MODE) ? "N" : "FF");
+    im_print((WIDTH / 2) + 2, 6, "DARK O%s", (game->check.DARK_MODE) ? "N" : "FF");
 
-    if (im_button(32, 8, "O"))
+    if (im_button(WIDTH / 2, 8, "O"))
         game->check.DEBUG_MODE = !game->check.DEBUG_MODE;
-    im_print(34, 8, "DEBUG MODE O%s", (game->check.DEBUG_MODE) ? "N" : "FF");
+    im_print((WIDTH / 2) + 2, 8, "DEBUG MODE O%s", (game->check.DEBUG_MODE) ? "N" : "FF");
 
     if (im_button(1, 6, "Reset candies"))
         game->candy.number = 0;
     if (im_button(1, 8, "Reset candies eaten"))
-        game->hasOneCandyCounter = 0;
+        game->candyEaten = 0;
     if (im_button(1, 10, "Reset candies thrown"))
-        game->hasTenCandyCounter = 0;
+        game->candyThrown = 0;
+    if (im_button(1, 12, "Increase candy freq (+1 / sec)"))
+        game->candy.freq += 1;
+    if (im_button(1, 14, "Increase candy freq (+10 / sec)"))
+        game->candy.freq += 10;
 
-    if (im_button(1, 13, "Reset lollypops"))
+    if (im_button(1, 19, "Reset lollypops"))
         game->lollypop = 0;
-        
-    if (im_button(1, 15, "Reset forge dialog"))
+
+    if (im_button(1, 21, "Reset forge dialog"))
         game->forgeDialog = 0;
 
-    if (im_button(1, 17, "Reset secret lollypops"))
+    if (im_button(1, 23, "Reset secret lollypops"))
     {
         game->check.foundCandyBoxLolly = false;
         game->check.foundForgeLolly = false;

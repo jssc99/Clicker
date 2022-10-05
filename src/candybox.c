@@ -37,12 +37,12 @@ void draw_candybox(Game *game)
     {
         if (im_button(1, 6, "Eat all the candies"))
         {
-            game->hasOneCandyCounter += game->candy.number;
+            game->candyEaten += game->candy.number;
             game->candy.number = 0;
         }
-        if (game->hasOneCandyCounter)
-            im_print(1, 7, "You have eaten %d cand%s", game->hasOneCandyCounter,
-                     (game->hasOneCandyCounter == true) ? "y" : "ies");
+        if (game->candyEaten)
+            im_print(1, 7, "You have eaten %d cand%s", game->candyEaten,
+                     (game->candyEaten == true) ? "y" : "ies");
     }
 
     // Throw Candy
@@ -54,13 +54,13 @@ void draw_candybox(Game *game)
     {
         if (im_button(1, 9, "Throw 10 candies to the ground") && game->candy.number >= 10)
         {
-            game->hasTenCandyCounter++;
+            game->candyThrown++;
             game->candy.number -= 10;
         }
-        if (game->hasTenCandyCounter)
+        if (game->candyThrown)
             im_print(1, 10, "You threw %d candies on the ground%s",
-                     game->hasTenCandyCounter * 10,
-                     getThrowAnim(game->hasTenCandyCounter));
+                     game->candyThrown * 10,
+                     getThrowAnim(game->candyThrown));
     }
 
     // Features

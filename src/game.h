@@ -16,9 +16,11 @@ typedef struct Check
     bool DARK_MODE;
     bool DEBUG_MODE;
     bool EXIT_GAME;
+
     bool hasOneCandy;
     bool hasTenCandy;
     bool hasThirtyCandy;
+
     bool foundCandyBoxLolly;
     bool foundForgeLolly;
     bool foundMerchantLolly;
@@ -45,11 +47,13 @@ typedef struct Game
 {
     Check check;
     Menu menu;
+
     Counter candy;
+    int candyEaten;
+    int candyThrown;
     unsigned long int lollypop;
+
     int featuresUnlocked;
-    int hasOneCandyCounter;
-    int hasTenCandyCounter;
     int forgeDialog;
 } Game;
 
