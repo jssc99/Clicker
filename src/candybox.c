@@ -68,30 +68,30 @@ void draw_candybox(Game *game)
     if (game->candy.amount > 30)
         game->check.hasThirtyCandy = true;
 
-    if (game->featuresUnlocked == 1)
+    if (game->featuresUnlocked == CANDYBOX)
         im_print_text(1, 13, "You've unlocked the status bar!");
-    else if (game->featuresUnlocked == 2)
+    else if (game->featuresUnlocked == DEBUGMENU)
         im_print_text(1, 13, "You've unlocked the debug menu!");
-    else if (game->featuresUnlocked == 3)
+    else if (game->featuresUnlocked == SAVEMENU)
         im_print_text(1, 13, "You've unlocked the save menu!");
-    else if (game->featuresUnlocked == 4)
+    else if (game->featuresUnlocked == MAP)
         im_print_text(1, 13, "You've unlocked the map!");
 
     if (game->check.hasThirtyCandy)
     {
-        if (game->featuresUnlocked == 3)
+        if (game->featuresUnlocked == SAVEMENU)
             if (im_button(1, 12, "One final one please! (5 candies)") && game->candy.amount >= 5)
             {
                 game->featuresUnlocked++;
                 game->candy.amount -= 5;
             }
-        if (game->featuresUnlocked == 2)
+        if (game->featuresUnlocked == DEBUGMENU)
             if (im_button(1, 12, "And another one (5 candies)") && game->candy.amount >= 5)
             {
                 game->featuresUnlocked++;
                 game->candy.amount -= 5;
             }
-        if (game->featuresUnlocked == 1)
+        if (game->featuresUnlocked == CANDYBOX)
             if (im_button(1, 12, "Request another feature (5 candies)") && game->candy.amount >= 5)
             {
                 game->featuresUnlocked++;

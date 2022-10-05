@@ -40,7 +40,8 @@ void game_update(Game *game)
              game->candy.amount, (game->candy.amount <= 1) ? "y" : "ies");
 
     if (game->lollypop)
-        im_print(1, 2, "You've got %lu lollypop%s", game->lollypop, (game->lollypop == 1) ? "" : "s");
+        im_print(1, 2, "%s %lu lollypop%s", (game->lollypop >= 10000000000) ? "->" : "You've got",
+         game->lollypop, (game->lollypop == 1) ? "" : "s");
 
     // GAME HEADER
 
