@@ -4,9 +4,7 @@
 #include <playground.h>
 #include <playground_backend_glfw.h>
 
-#include "game.h"/*
-#include "../tests/test_button.c"
-#include "../tests/test_save.c"*/
+#include "game.h"
 
 int main(int argc, char *argv[])
 {

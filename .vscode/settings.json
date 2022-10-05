@@ -1,6 +1,8 @@
 {
     "files.associations": {
         "playground.h": "c",
-        "glfw3.h": "c"
+        "glfw3.h": "c",
+        "candybox.h": "c",
+        "merchant.h": "c"
     }
 }

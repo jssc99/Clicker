@@ -1,18 +1,20 @@
 #pragma once
 
+#include <stdbool.h>
+
 #define WIDTH 80
 #define HEIGTH 65
 
 typedef struct Check
 {
-    _Bool DARK_MODE;
-    _Bool EXIT_GAME;
-    _Bool hasOneCandy;
-    _Bool hasTenCandy;
-    _Bool hasThirtyCandy;
-    _Bool foundCandyBoxLolly;
-    _Bool foundForgeLolly;
-    _Bool foundMerchantLolly;
+    bool DARK_MODE;
+    bool EXIT_GAME;
+    bool hasOneCandy;
+    bool hasTenCandy;
+    bool hasThirtyCandy;
+    bool foundCandyBoxLolly;
+    bool foundForgeLolly;
+    bool foundMerchantLolly;
 } Check;
 
 typedef enum Menu
@@ -41,21 +43,3 @@ typedef struct Game
 void game_init(Game *game);
 void game_update(Game *game);
 void game_shutdown(Game *game);
-
-void draw_header(Game *game);
-void draw_candybox(Game *game);
-void draw_savemenu(Game *game);
-void draw_debugmenu(Game *game);
-void draw_forge(Game *game);
-void draw_merchant(Game *game);
-
-void header_button_candybox(Game *game);
-void header_button_forge(Game *game);
-void header_button_savemenu(Game *game);
-void header_button_debugmenu(Game *game);
-void header_button_merchant(Game *game);
-
-void game_save(Game *game, const char *filename);
-void game_load(Game *game, const char *filename);
-
-const char *getThrowAnim(int counter);
