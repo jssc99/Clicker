@@ -15,7 +15,7 @@
 
 void game_init(Game *game)
 {
-    game->candy.amount = 1000;
+    //game->candy.amount = 1000; // GET RICH QUICK WITH THIS ONE EASY TRICK
     game->menu = ON_CANDY_BOX;
     game->candy.freq = 1.0;
 }
@@ -47,10 +47,10 @@ void counter_update(Counter *counter)
 void game_update(Game *game)
 {
     counter_update(&game->candy);
+    // counter_update(&game->lollypop); // not used
+
     im_print(1, 1, "%s %lu cand%s", (game->candy.amount >= 10000000000) ? "->" : "You've got",
              game->candy.amount, (game->candy.amount <= 1) ? "y" : "ies");
-
-    // counter_update(&game->lollypop); // not used
     if (game->lollypop.amount)
         im_print(1, 2, "%s %lu lollypop%s", (game->lollypop.amount >= 10000000000) ? "->" : "You've got",
                  game->lollypop.amount, (game->lollypop.amount == 1) ? "" : "s");

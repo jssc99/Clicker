@@ -26,12 +26,12 @@ const char *getThrowAnim(int counter)
         return ". Fuck You.";
 }
 
-void im_feature_button(Counter *candy, int *featuresUnlocked, int x, int y, const char *text, int cost)
+void im_feature_button(Counter *counter, int *featuresUnlocked, int x, int y, const char *text, int cost)
 {
-    if (im_button(x, y, text) && candy->amount >= cost)
+    if (im_button(x, y, text) && counter->amount >= cost)
     {
         *featuresUnlocked += 1;
-        candy->amount -= cost;
+        counter->amount -= cost;
     }
 }
 

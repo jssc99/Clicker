@@ -2,21 +2,28 @@
 
 void draw_debugmenu(Game *game)
 {
-    if (im_button(1, 6, "Reset candies"))
+    if (im_button(1, 6, "Get 100 candies"))
+        game->candy.amount += 100;
+    if (im_button(1, 8, "Reset candies"))
         game->candy.amount = 0;
-    if (im_button(1, 8, "Reset candies eaten"))
+    if (im_button(1, 10, "Reset candies eaten"))
         game->candyEaten = 0;
-    if (im_button(1, 10, "Reset candies thrown"))
+    if (im_button(1, 12, "Reset candies thrown"))
         game->candyThrown = 0;
-    if (im_button(1, 12, "Increase candy freq (+1 / sec)"))
+
+    if (im_button(1, 14, "Increase candy freq (+1 / sec)"))
         game->candy.freq += 1;
-    if (im_button(1, 14, "Increase candy freq (+10 / sec)"))
+    if (im_button(1, 16, "Increase candy freq (+10 / sec)"))
         game->candy.freq += 10;
-    if (im_button(1, 16, "Decrease candy freq (-1 / sec)"))
+    if (im_button(1, 18, "Set candy freq to 0"))
+        game->candy.freq = 0;
+    if (im_button(1, 20, "Decrease candy freq (-1 / sec)"))
         game->candy.freq -= 1;
-    if (im_button(1, 18, "Decrease candy freq (-10 / sec)"))
+    if (im_button(1, 22, "Decrease candy freq (-10 / sec)"))
         game->candy.freq -= 10;
-    im_print(1, 20, "FREQ CANDY : %0.2f / SEC", game->candy.freq);
+    im_print(1, 24, "FREQ CANDY : %0.2f / SEC", game->candy.freq);
+
+    // Other side
 
     if (im_button(WIDTH / 2, 6, "#"))
     {
