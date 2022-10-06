@@ -23,4 +23,17 @@ void draw_map(Game *game)
                 game->featuresUnlocked++;
         }
     }
+
+    // Secret lollypop
+
+    if (game->check.foundMapLolly == false)
+    {
+        if (im_big_button_quiet(80, 40, "O", "|", "|"))
+        {
+            game->lollypop++;
+            game->check.foundMapLolly = true;
+        }
+    }
+    else
+        im_print_text(1, HEIGTH - 2, "You found the hidden lollypop!");
 }

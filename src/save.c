@@ -36,7 +36,7 @@ void draw_savemenu(Game *game)
 
     if (game->check.foundSaveLolly == false)
     {
-        if (im_button_quiet(59, 19, "--o"))
+        if (im_button_quiet(59, 19, "--O"))
         {
             game->lollypop++;
             game->check.foundSaveLolly = true;

@@ -28,16 +28,13 @@ void candy_counter(Counter *counter)
         counter->amount++;
         counter->frames -= counter->timer;
     }
+    im_print(1, 1, "%s %lu cand%s", (counter->amount >= 10000000000) ? "->" : "You've got",
+             counter->amount, (counter->amount <= 1) ? "y" : "ies");
 }
 
 void game_update(Game *game)
 {
     candy_counter(&game->candy);
-
-    // CANDY & LOLLYPOP DISPLAY
-
-    im_print(1, 1, "%s %lu cand%s", (game->candy.amount >= 10000000000) ? "->" : "You've got",
-             game->candy.amount, (game->candy.amount <= 1) ? "y" : "ies");
 
     if (game->lollypop)
         im_print(1, 2, "%s %lu lollypop%s", (game->lollypop >= 10000000000) ? "->" : "You've got",

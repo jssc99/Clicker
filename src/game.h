@@ -23,6 +23,7 @@ typedef struct Check
 
     bool foundCandyBoxLolly;
     bool foundSaveLolly;
+    bool foundMapLolly;
     bool foundForgeLolly;
     bool foundMerchantLolly;
 } Check;
