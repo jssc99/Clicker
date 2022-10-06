@@ -9,7 +9,7 @@ void draw_merchant(Game *game)
     {
         if (im_big_button_quiet(68, 23, "o", "|", "|"))
         {
-            game->lollypop++;
+            game->lollypop.amount++;
             game->check.foundMerchantLolly = true;
         }
     }

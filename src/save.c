@@ -26,25 +26,25 @@ void game_load(Game *game, const char *filename)
 
 void draw_savemenu(Game *game)
 {
-    if (im_button(1, 6, "Save game"))
+    if (im_button(get_center("Save game"), 6, "Save game"))
         game_save(game, "save.bin");
-    if (im_button(1, 8, "Load gamesave"))
+    if (im_button(get_center("Load gamesave"), 9, "Load gamesave"))
         game_load(game, "save.bin");
-    change_bg_fg(game->check.DARK_MODE);
+    change_bg_fg(game->DARK_MODE);
 
     // "Secret" Lollypop
 
     if (game->check.foundSaveLolly == false)
     {
-        if (im_button_quiet(59, 19, "--O"))
+        if (im_button_quiet(69, 56, "--O"))
         {
-            game->lollypop++;
+            game->lollypop.amount++;
             game->check.foundSaveLolly = true;
         }
     }
     else
-        im_print_text(1, 16, "You found the not so secret lollypop!");
+        im_print_text(get_center("You found the not so secret lollypop!"), 16, "You found the not so secret lollypop!");
 
-    if (im_button(1, HEIGTH - 4, "EXIT GAME"))
-        game->check.EXIT_GAME = true;
+    if (im_button(get_center("EXIT GAME"), HEIGTH - 4, "EXIT GAME"))
+        game->EXIT_GAME = true;
 }

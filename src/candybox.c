@@ -26,6 +26,15 @@ const char *getThrowAnim(int counter)
         return ". Fuck You.";
 }
 
+void im_feature_button(Counter *candy, int *featuresUnlocked, int x, int y, const char *text, int cost)
+{
+    if (im_button(x, y, text) && candy->amount >= cost)
+    {
+        *featuresUnlocked += 1;
+        candy->amount -= cost;
+    }
+}
+
 void draw_candybox(Game *game)
 {
     // Eat Candy
@@ -58,63 +67,62 @@ void draw_candybox(Game *game)
             game->candy.amount -= 10;
         }
         if (game->candyThrown)
-            im_print(1, 10, "You threw %d candies on the ground%s",
-                     game->candyThrown * 10,
+            im_print(1, 10, "You threw %d candies on the ground%s", game->candyThrown * 10,
                      getThrowAnim(game->candyThrown));
     }
 
     // Features
 
-    if (game->candy.amount > 30)
+    if (game->candy.amount > 29)
         game->check.hasThirtyCandy = true;
-
-    if (game->featuresUnlocked == CANDYBOX)
-        im_print_text(1, 13, "You've unlocked the status bar!");
-    else if (game->featuresUnlocked == DEBUGMENU)
-        im_print_text(1, 13, "You've unlocked the debug menu!");
-    else if (game->featuresUnlocked == SAVEMENU)
-        im_print_text(1, 13, "You've unlocked the save menu!");
-    else if (game->featuresUnlocked == MAP)
-        im_print_text(1, 13, "You've unlocked the map!");
 
     if (game->check.hasThirtyCandy)
     {
-        if (game->featuresUnlocked == SAVEMENU)
-            if (im_button(1, 12, "One final one please! (5 candies)") && game->candy.amount >= 5)
-            {
-                game->featuresUnlocked++;
-                game->candy.amount -= 5;
-            }
-        if (game->featuresUnlocked == DEBUGMENU)
-            if (im_button(1, 12, "And another one (5 candies)") && game->candy.amount >= 5)
-            {
-                game->featuresUnlocked++;
-                game->candy.amount -= 5;
-            }
-        if (game->featuresUnlocked == CANDYBOX)
-            if (im_button(1, 12, "Request another feature (5 candies)") && game->candy.amount >= 5)
-            {
-                game->featuresUnlocked++;
-                game->candy.amount -= 5;
-            }
-        if (game->featuresUnlocked == 0)
-            if (im_button(1, 12, "Request a new feature (30 candies)") && game->candy.amount >= 30)
-            {
-                game->featuresUnlocked++;
-                game->candy.amount -= 30;
-            }
+        switch (game->featuresUnlocked)
+        {
+        case MAP:
+            im_print_text(1, 13, "You've unlocked the map!");
+            break;
+
+        case SAVEMENU:
+            im_feature_button(&game->candy, &game->featuresUnlocked,
+                              1, 12, "One final one please! (5 candies)", 5);
+            im_print_text(1, 13, "You've unlocked the save menu!");
+            break;
+
+        case DEBUGMENU:
+            im_feature_button(&game->candy, &game->featuresUnlocked,
+                              1, 12, "And another one (5 candies)", 5);
+            im_print_text(1, 13, "You've unlocked the debug menu!");
+            break;
+
+        case CANDYBOX:
+            im_feature_button(&game->candy, &game->featuresUnlocked,
+                              1, 12, "Request another feature (5 candies)", 5);
+            im_print_text(1, 13, "You've unlocked the status bar!");
+            break;
+
+        case NONE:
+            im_feature_button(&game->candy, &game->featuresUnlocked,
+                              1, 12, "Request a new feature (30 candies)", 5);
+            break;
+
+        default:
+            break;
+        }
     }
 
     // Secret lollypop
 
-    if (game->check.foundCandyBoxLolly == false && game->featuresUnlocked)
-    {
-        if (im_button_quiet(WIDTH - 3, 4, "--O"))
+    if (game->featuresUnlocked)
+        if (game->check.foundCandyBoxLolly == false)
         {
-            game->lollypop++;
-            game->check.foundCandyBoxLolly = true;
+            if (im_button_quiet(WIDTH - 3, 4, "--O"))
+            {
+                game->lollypop.amount++;
+                game->check.foundCandyBoxLolly = true;
+            }
         }
-    }
-    else if (game->check.foundCandyBoxLolly)
-        im_print_text(1, 47, "You found the hidden lollypop!");
+        else
+            im_print_text(1, 47, "You found the hidden lollypop!");
 }

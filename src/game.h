@@ -1,10 +1,12 @@
 #pragma once
 
 #include <stdbool.h>
+#include <stdlib.h>
 
 #define WIDTH 105
 #define HEIGTH 65
 
+#define NONE 0
 #define CANDYBOX 1
 #define DEBUGMENU 2
 #define SAVEMENU 3
@@ -14,9 +16,6 @@
 
 typedef struct Check
 {
-    bool DARK_MODE;
-    bool EXIT_GAME;
-
     bool hasOneCandy;
     bool hasTenCandy;
     bool hasThirtyCandy;
@@ -33,15 +32,15 @@ typedef enum Menu
     ON_CANDY_BOX,
     ON_DEBUG_MENU,
     ON_SAVE_MENU,
+    ON_MAP,
     ON_FORGE,
-    ON_MERCHANT,
-    ON_MAP
+    ON_MERCHANT
 } Menu;
 
 typedef struct Counter
 {
-    float frames;
     float freq;
+    float frames;
     float timer;
     unsigned long int amount;
 } Counter;
@@ -49,13 +48,16 @@ typedef struct Counter
 typedef struct Game
 {
     Check check;
-    Menu menu;
+    bool DARK_MODE;
+    bool EXIT_GAME;
 
     Counter candy;
     int candyEaten;
     int candyThrown;
-    unsigned long int lollypop;
-
+    
+    Counter lollypop;
+    
+    Menu menu;
     int featuresUnlocked;
     int forgeDialog;
 } Game;

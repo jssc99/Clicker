@@ -128,7 +128,7 @@ bool im_big_button_quiet(int x, int y, const char *text1, const char *text2, con
         return false;
 }
 
-bool im_house_button(int x, int y, int width, int length)
+bool im_custom_button(int x, int y, int width, int length)
 {
     int mX, mY;
     pg_get_mouse_coords(&mX, &mY);
@@ -137,6 +137,11 @@ bool im_house_button(int x, int y, int width, int length)
         return true;
     else
         return false;
+}
+
+int get_center(const char *text)
+{
+    return (WIDTH / 2) - (strlen(text) / 2);
 }
 
 void change_bg_fg(int status)

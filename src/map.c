@@ -7,14 +7,14 @@ void draw_map(Game *game)
     if (game->featuresUnlocked < MERCHANT)
         im_print_text(1, 7, "The merchant is currently out, but the forge is open.");
 
-    if (im_house_button(62, 33, 10, 6))
+    if (im_custom_button(62, 33, 10, 6))
     {
         game->menu = ON_FORGE;
         if (game->featuresUnlocked == MAP)
             game->featuresUnlocked++;
     }
 
-    if (im_house_button(20, 30, 8, 10))
+    if (im_custom_button(20, 30, 8, 10))
     {
         if (game->featuresUnlocked >= MERCHANT)
         {
@@ -30,7 +30,7 @@ void draw_map(Game *game)
     {
         if (im_big_button_quiet(80, 40, "O", "|", "|"))
         {
-            game->lollypop++;
+            game->lollypop.amount++;
             game->check.foundMapLolly = true;
         }
     }

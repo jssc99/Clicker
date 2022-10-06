@@ -34,7 +34,7 @@ void draw_forge(Game *game)
     if (im_button(1, 45, "One lollypop please! (60 candies)") && game->candy.amount >= 60)
     {
         game->candy.amount -= 60;
-        game->lollypop++;
+        game->lollypop.amount++;
         game->forgeDialog++;
     }
 
@@ -44,7 +44,7 @@ void draw_forge(Game *game)
     {
         if (im_button_quiet(25, 22, "--O"))
         {
-            game->lollypop++;
+            game->lollypop.amount++;
             game->check.foundForgeLolly = true;
         }
     }

@@ -15,30 +15,45 @@
 
 void game_init(Game *game)
 {
-    game->candy.amount = 10000;
+    game->candy.amount = 1000;
     game->menu = ON_CANDY_BOX;
-    game->candy.freq = 1;
+    game->candy.freq = 1.0;
 }
 
-void candy_counter(Counter *counter)
+void counter_update(Counter *counter)
 {
-    counter->timer = 1.0 / counter->freq;
-    if ((counter->frames += pg_io_get_frame_time()) >= counter->timer)
+    if (counter->freq > 0.0 && counter->amount != 4294967295) // positif freq
     {
-        counter->amount++;
-        counter->frames -= counter->timer;
+        counter->timer = 1.0 / counter->freq;
+        counter->frames += pg_io_get_frame_time();
+        while (counter->frames >= counter->timer && counter->amount != 4294967295)
+        {
+            counter->amount++;
+            counter->frames -= counter->timer;
+        }
     }
-    im_print(1, 1, "%s %lu cand%s", (counter->amount >= 10000000000) ? "->" : "You've got",
-             counter->amount, (counter->amount <= 1) ? "y" : "ies");
+    else if (counter->freq < 0.0 && counter->amount != 0) // negatif freq
+    {
+        counter->timer = 1.0 / (-1 * counter->freq);
+        counter->frames += pg_io_get_frame_time();
+        while (counter->frames >= counter->timer && counter->amount != 0)
+        {
+            counter->amount--;
+            counter->frames -= counter->timer;
+        }
+    }
 }
 
 void game_update(Game *game)
 {
-    candy_counter(&game->candy);
+    counter_update(&game->candy);
+    im_print(1, 1, "%s %lu cand%s", (game->candy.amount >= 10000000000) ? "->" : "You've got",
+             game->candy.amount, (game->candy.amount <= 1) ? "y" : "ies");
 
-    if (game->lollypop)
-        im_print(1, 2, "%s %lu lollypop%s", (game->lollypop >= 10000000000) ? "->" : "You've got",
-         game->lollypop, (game->lollypop == 1) ? "" : "s");
+    // counter_update(&game->lollypop); // not used
+    if (game->lollypop.amount)
+        im_print(1, 2, "%s %lu lollypop%s", (game->lollypop.amount >= 10000000000) ? "->" : "You've got",
+                 game->lollypop.amount, (game->lollypop.amount == 1) ? "" : "s");
 
     // GAME HEADER
 
@@ -61,12 +76,12 @@ void game_update(Game *game)
         draw_savemenu(game);
         break;
 
-    case ON_FORGE:
-        draw_forge(game);
-        break;
-
     case ON_MAP:
         draw_map(game);
+        break;
+
+    case ON_FORGE:
+        draw_forge(game);
         break;
 
     case ON_MERCHANT:
