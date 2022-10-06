@@ -104,7 +104,7 @@ void draw_candybox(Game *game)
 
         case NONE:
             im_feature_button(&game->candy, &game->featuresUnlocked,
-                              1, 12, "Request a new feature (30 candies)", 5);
+                              1, 12, "Request a new feature (30 candies)", 30);
             break;
 
         default:

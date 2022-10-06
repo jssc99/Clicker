@@ -2,9 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include <playground.h>
-
 #include "game.h"
-#include "gui.h"
 #include "header.h"
 #include "candybox.h"
 #include "forge.h"

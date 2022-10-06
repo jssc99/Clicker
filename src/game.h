@@ -1,7 +1,6 @@
 #pragma once
 
-#include <stdbool.h>
-#include <stdlib.h>
+#include "gui.h"
 
 #define WIDTH 105
 #define HEIGTH 65
