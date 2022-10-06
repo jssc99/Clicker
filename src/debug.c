@@ -2,8 +2,8 @@
 
 void draw_debugmenu(Game *game)
 {
-    if (im_button(1, 6, "Get 100 candies"))
-        game->candy.amount += 100;
+    if (im_button(1, 6, "Get 1000 candies"))
+        game->candy.amount += 1000;
     if (im_button(1, 8, "Reset candies"))
         game->candy.amount = 0;
     if (im_button(1, 10, "Reset candies eaten"))

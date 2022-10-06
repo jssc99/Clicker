@@ -50,7 +50,7 @@ void draw_candybox(Game *game)
             game->candy.amount = 0;
         }
         if (game->candyEaten)
-            im_print(1, 7, "You have eaten %d cand%s", game->candyEaten,
+            im_print(1, 7, "You have eaten %d cand%s.", game->candyEaten,
                      (game->candyEaten == true) ? "y" : "ies");
     }
 
